@@ -78,3 +78,18 @@ Go Arch       arm64
 Go OS         darwin
 Go Version    go1.24.3
 ```
+
+# Docker
+
+See https://github.com/GoogleContainerTools/distroless
+
+```
+docker build \
+  --build-arg SHA="local-test-sha" \
+  --build-arg TAG="local-test-tag" \
+  -t specta:local .
+```
+
+```
+docker run -e SPECTA_ENVIRONMENT=development -p 7777:7777 specta:local daemon
+```
