@@ -22,6 +22,12 @@ func New(c Config) *Daemon {
 		})
 	}
 
+	log.Log(
+		"level", "info",
+		"message", "daemon is starting",
+		"environment", c.Env.Environment,
+	)
+
 	return &Daemon{
 		env: c.Env,
 		log: log,

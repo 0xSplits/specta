@@ -11,12 +11,12 @@ type flag struct {
 }
 
 func (f *flag) Init(cmd *cobra.Command) {
-	cmd.Flags().StringVar(&f.Env, "env", "development", "the environment file to load, e.g. development for env.development")
+	cmd.Flags().StringVar(&f.Env, "env", ".env", "the environment file to load")
 }
 
 func (f *flag) Validate() error {
-	if f.Env != "development" && f.Env != "testing" && f.Env != "staging" && f.Env != "production" {
-		return tracer.Maskf(runtime.ExecutionFailedError, "--env must be one of [development testing staging production]")
+	if f.Env == "" {
+		return tracer.Maskf(runtime.ExecutionFailedError, "--env must not be empty")
 	}
 
 	return nil

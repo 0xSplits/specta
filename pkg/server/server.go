@@ -85,13 +85,11 @@ func New(c Config) *Server {
 }
 
 func (s *Server) Daemon() {
-	{
-		s.log.Log(
-			"level", "info",
-			"message", "server is accepting calls",
-			"addr", s.lis.Addr().String(),
-		)
-	}
+	s.log.Log(
+		"level", "info",
+		"message", "server is accepting calls",
+		"address", s.lis.Addr().String(),
+	)
 
 	{
 		err := s.srv.Serve(s.lis)

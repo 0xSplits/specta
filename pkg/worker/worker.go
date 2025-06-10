@@ -36,12 +36,10 @@ func New(c Config) *Worker {
 }
 
 func (w *Worker) Daemon() {
-	{
-		w.log.Log(
-			"level", "info",
-			"message", "worker is executing tasks",
-		)
-	}
+	w.log.Log(
+		"level", "info",
+		"message", "worker is executing tasks",
+	)
 
 	for {
 		for _, h := range w.han {

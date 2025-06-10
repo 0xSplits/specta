@@ -2,10 +2,11 @@ package envvar
 
 import (
 	"fmt"
-	"time"
+	"slices"
 
 	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
+	"github.com/xh3b4sd/tracer"
 )
 
 type Env struct {
@@ -15,30 +16,29 @@ type Env struct {
 	LogLevel    string `split_words:"true" required:"true"`
 }
 
-func Load(kin string) Env {
+func Load(pat string) Env {
 	var err error
-
 	var env Env
 
-	for {
-		{
-			err = godotenv.Load(fmt.Sprintf(".env.%s", kin))
-			if err != nil {
-				fmt.Printf("could not load %s (%s)\n", kin, err)
-				time.Sleep(5 * time.Second)
-				continue
-			}
+	{
+		err = godotenv.Load(pat)
+		if err != nil {
+			tracer.Panic(tracer.Mask(err))
 		}
-
-		{
-			err = envconfig.Process("SPECTA", &env)
-			if err != nil {
-				fmt.Printf("could not process envfile %s (%s)\n", kin, err)
-				time.Sleep(5 * time.Second)
-				continue
-			}
-		}
-
-		return env
 	}
+
+	{
+		err = envconfig.Process("SPECTA", &env)
+		if err != nil {
+			tracer.Panic(tracer.Mask(err))
+		}
+	}
+
+	{
+		if !slices.Contains([]string{"development", "testing", "staging", "production"}, env.Environment) {
+			tracer.Panic(tracer.Mask(fmt.Errorf("SPECTA_ENVIRONMENT must be one of [development testing staging production]")))
+		}
+	}
+
+	return env
 }
