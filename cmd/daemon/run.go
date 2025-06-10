@@ -55,7 +55,7 @@ func (r *run) runE(cmd *cobra.Command, arg []string) error {
 	case <-time.After(10 * time.Second):
 		// One SIGTERM gives the daemon some time to tear down gracefully.
 	case <-sig:
-		// Two SIGTERMs stop the immediatelly.
+		// Two SIGTERMs stop the daemon immediately.
 	}
 
 	return nil
