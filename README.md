@@ -24,13 +24,13 @@ Use "specta [command] --help" for more information about a command.
 ```
 
 ```
-specta daemon
+SPECTA_ENVIRONMENT=development specta daemon
 ```
 
 ```
-{ "time":"2025-06-10 14:02:21", "leve":"info", "mess":"daemon is starting",        "environment":"development", "call":"/Users/xh3b4sd/project/0xSplits/specta/pkg/daemon/daemon.go:25" }
-{ "time":"2025-06-10 14:02:21", "leve":"info", "mess":"server is accepting calls", "address":"127.0.0.1:7777",  "call":"/Users/xh3b4sd/project/0xSplits/specta/pkg/server/server.go:88" }
-{ "time":"2025-06-10 14:02:21", "leve":"info", "mess":"worker is executing tasks",                              "call":"/Users/xh3b4sd/project/0xSplits/specta/pkg/worker/worker.go:39" }
+{ "time":"2025-06-10 14:25:02", "level":"info", "message":"daemon is starting",        "environment":"development", "caller":"/Users/xh3b4sd/project/0xSplits/specta/pkg/daemon/daemon.go:25" }
+{ "time":"2025-06-10 14:25:02", "level":"info", "message":"server is accepting calls", "address":"127.0.0.1:7777",  "caller":"/Users/xh3b4sd/project/0xSplits/specta/pkg/server/server.go:88" }
+{ "time":"2025-06-10 14:25:02", "level":"info", "message":"worker is executing tasks",                              "caller":"/Users/xh3b4sd/project/0xSplits/specta/pkg/worker/worker.go:39" }
 ```
 
 ```

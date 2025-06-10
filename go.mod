@@ -10,7 +10,7 @@ require (
 	github.com/rs/cors v1.11.1
 	github.com/spf13/cobra v1.9.1
 	github.com/twitchtv/twirp v8.1.3+incompatible
-	github.com/xh3b4sd/logger v0.9.0
+	github.com/xh3b4sd/logger v0.10.0
 	github.com/xh3b4sd/tracer v0.11.1
 )
 
