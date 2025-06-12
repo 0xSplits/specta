@@ -46,17 +46,17 @@ func New(c Config) *Registry {
 	}
 }
 
-func (r *Registry) Counter(string) (metric.Float64Counter, map[string]struct{}, bool) {
+func (r *Registry) Counter(string) (metric.Float64Counter, map[string]struct{}, error) {
 	// TODO implement getter for counter
-	return nil, nil, false
+	return nil, nil, nil
 }
 
-func (r *Registry) Gauge(string) (metric.Float64Gauge, map[string]struct{}, bool) {
+func (r *Registry) Gauge(string) (metric.Float64Gauge, map[string]struct{}, error) {
 	// TODO implement getter for gauge
-	return nil, nil, false
+	return nil, nil, nil
 }
 
-func (r *Registry) Histogram(string) (metric.Float64Histogram, map[string]struct{}, bool) {
+func (r *Registry) Histogram(string) (metric.Float64Histogram, map[string]struct{}, error) {
 	// TODO implement getter for histogram
-	return nil, nil, false
+	return nil, nil, nil
 }
