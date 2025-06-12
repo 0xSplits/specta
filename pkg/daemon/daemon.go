@@ -40,7 +40,7 @@ func New(c Config) *Daemon {
 	{
 		reg = registry.New(registry.Config{
 			Log: log,
-			Met: musMet(c),
+			Met: mustCreateOpenTelemetryMeterInterface(c),
 		})
 	}
 
@@ -51,11 +51,11 @@ func New(c Config) *Daemon {
 	}
 }
 
-func metNam(env string) string {
+func createNewMeterNameWithEnvironment(env string) string {
 	return fmt.Sprintf("specta.%s.splits.org", env)
 }
 
-func musMet(cfg Config) otelmetric.Meter {
+func mustCreateOpenTelemetryMeterInterface(cfg Config) otelmetric.Meter {
 	exp, err := prometheus.New()
 	if err != nil {
 		tracer.Panic(tracer.Mask(err))
@@ -63,5 +63,5 @@ func musMet(cfg Config) otelmetric.Meter {
 
 	return sdkmetric.NewMeterProvider(
 		sdkmetric.WithReader(exp),
-	).Meter(metNam(cfg.Env.Environment))
+	).Meter(createNewMeterNameWithEnvironment(cfg.Env.Environment))
 }
