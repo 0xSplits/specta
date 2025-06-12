@@ -23,7 +23,7 @@ jobs:
         uses: "docker/setup-buildx-action@v3.10.0"
 
       - name: "Push Docker Image"
-        uses: "docker/build-push-action@v6.16.0"
+        uses: "docker/build-push-action@v6.18.0"
         with:
           push: true
           tags: "${{ secrets.AWS_ACCOUNT_NUMBER }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ github.event.repository.name }}:${{ github.ref_name }}"
