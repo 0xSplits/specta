@@ -8,6 +8,7 @@ import (
 	"github.com/0xSplits/specta/pkg/runtime"
 	"github.com/0xSplits/specta/pkg/server/handler"
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/twitchtv/twirp"
 	"github.com/xh3b4sd/logger"
 	"github.com/xh3b4sd/tracer"
@@ -69,6 +70,11 @@ func New(c Config) *Server {
 			wri.WriteHeader(http.StatusOK)
 			_, _ = wri.Write(linBrk(runtime.JSON()))
 		})
+	}
+
+	// Add the metrics endpoint in Prometehus format.
+	{
+		rtr.NewRoute().Methods("GET").Path("/metrics").Handler(promhttp.Handler())
 	}
 
 	for _, x := range c.Han {

@@ -26,7 +26,7 @@ func (d *Daemon) Server() *server.Server {
 
 	return server.New(server.Config{
 		Han: []handler.Interface{
-			metrics.New(metrics.Config{Env: d.env, Log: d.log}),
+			metrics.New(metrics.Config{Env: d.env, Log: d.log, Reg: d.reg}),
 		},
 		Int: []twirp.Interceptor{
 			failure.New(failure.Config{Log: d.log}).Method,
