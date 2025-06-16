@@ -33,7 +33,6 @@ func (d *Daemon) Server() *server.Server {
 		},
 		Lis: lis,
 		Log: d.log,
-		Met: d.met,
 		Mid: []mux.MiddlewareFunc{
 			cors.New(cors.Config{Log: d.log}).Handler,
 		},

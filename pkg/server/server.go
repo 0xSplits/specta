@@ -12,7 +12,6 @@ import (
 	"github.com/twitchtv/twirp"
 	"github.com/xh3b4sd/logger"
 	"github.com/xh3b4sd/tracer"
-	"go.opentelemetry.io/otel/metric"
 )
 
 type Config struct {
@@ -25,8 +24,6 @@ type Config struct {
 	Lis net.Listener
 	// Log is the structured logger passed down the stack.
 	Log logger.Interface
-	// Met is the interface to create new metrics.
-	Met metric.Meter
 	// Mid are the protocol specific transport layer middlewares executed before
 	// any RPC handler.
 	Mid []mux.MiddlewareFunc

@@ -3,7 +3,6 @@ package registry
 import (
 	"errors"
 	"fmt"
-	"reflect"
 	"testing"
 
 	"github.com/0xSplits/specta/pkg/envvar"
@@ -103,6 +102,14 @@ func Test_Registry_record_counter_success(t *testing.T) {
 				"foo": "one",
 			},
 		},
+		// Case 001
+		{
+			nam: "allowed_counter",
+			val: 41.0,
+			lab: map[string]string{
+				"foo": "two",
+			},
+		},
 	}
 
 	for i, tc := range testCases {
@@ -140,15 +147,21 @@ func Test_Registry_record_counter_success(t *testing.T) {
 			if len(rec.Recorded().Lab) != 1 {
 				t.Fatalf("expected %#v got %#v", 1, len(rec.Recorded().Lab))
 			}
-			if !reflect.DeepEqual(rec.Recorded().Lab[0], map[string]string{"env": "testing", "foo": "one"}) {
-				t.Fatalf("expected %#v got %#v", map[string]string{"env": "testing", "foo": "one"}, rec.Recorded().Lab[0])
+			if len(rec.Recorded().Lab[0]) != 2 {
+				t.Fatalf("expected %#v got %#v", 2, len(rec.Recorded().Lab[0]))
+			}
+			if rec.Recorded().Lab[0]["env"] != "testing" {
+				t.Fatalf("expected %#v got %#v", "testing", rec.Recorded().Lab[0]["env"])
+			}
+			if rec.Recorded().Lab[0]["foo"] != "one" && rec.Recorded().Lab[0]["foo"] != "two" {
+				t.Fatalf("expected %#v got %#v", "one|two", rec.Recorded().Lab[0]["env"])
 			}
 
 			if len(rec.Recorded().Val) != 1 {
 				t.Fatalf("expected %#v got %#v", 1, len(rec.Recorded().Val))
 			}
-			if !reflect.DeepEqual(rec.Recorded().Val[0], 38.5) {
-				t.Fatalf("expected %#v got %#v", 38.5, rec.Recorded().Val[0])
+			if rec.Recorded().Val[0] != 38.5 && rec.Recorded().Val[0] != 41.0 {
+				t.Fatalf("expected %#v got %#v", "38.5|41.0", rec.Recorded().Val[0])
 			}
 		})
 	}
