@@ -3,60 +3,53 @@ package registry
 import (
 	"fmt"
 
+	"github.com/0xSplits/specta/pkg/envvar"
+	"github.com/0xSplits/specta/pkg/recorder"
 	"github.com/xh3b4sd/logger"
 	"github.com/xh3b4sd/tracer"
-	"go.opentelemetry.io/otel/metric"
 )
 
 type Config struct {
+	Env envvar.Env
 	Log logger.Interface
-	Met metric.Meter
+
+	Cou map[string]recorder.Interface
+	Gau map[string]recorder.Interface
+	His map[string]recorder.Interface
 }
 
 type Registry struct {
+	env envvar.Env
 	log logger.Interface
-	met metric.Meter
+
+	cou map[string]recorder.Interface
+	gau map[string]recorder.Interface
+	his map[string]recorder.Interface
 }
 
+// New creates the fully configured registry whitelisting the set of counter
+// metrics that are allowed to be tracked via the Specta RPCs.
 func New(c Config) *Registry {
 	if c.Log == nil {
 		tracer.Panic(tracer.Mask(fmt.Errorf("%T.Log must not be empty", c)))
 	}
-	if c.Met == nil {
-		tracer.Panic(tracer.Mask(fmt.Errorf("%T.Met must not be empty", c)))
-	}
 
-	// TODO register whitelisted metrics
-	// counter, err := c.Met.Float64Counter("foo", metric.WithDescription("a simple counter"))
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// gauge, err := c.Met.Float64Gauge("foo", metric.WithDescription("a simple gauge"))
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// historgam, err := c.Met.Float64Histogram("foo", metric.WithDescription("a simple histogram"))
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	if c.Cou == nil {
+		tracer.Panic(tracer.Mask(fmt.Errorf("%T.Cou must not be empty", c)))
+	}
+	if c.Gau == nil {
+		tracer.Panic(tracer.Mask(fmt.Errorf("%T.Gau must not be empty", c)))
+	}
+	if c.His == nil {
+		tracer.Panic(tracer.Mask(fmt.Errorf("%T.His must not be empty", c)))
+	}
 
 	return &Registry{
+		env: c.Env,
 		log: c.Log,
-		met: c.Met,
+
+		cou: c.Cou,
+		gau: c.Gau,
+		his: c.His,
 	}
-}
-
-func (r *Registry) Counter(string) (metric.Float64Counter, map[string]struct{}, error) {
-	// TODO implement getter for counter
-	return nil, nil, nil
-}
-
-func (r *Registry) Gauge(string) (metric.Float64Gauge, map[string]struct{}, error) {
-	// TODO implement getter for gauge
-	return nil, nil, nil
-}
-
-func (r *Registry) Histogram(string) (metric.Float64Histogram, map[string]struct{}, error) {
-	// TODO implement getter for histogram
-	return nil, nil, nil
 }
