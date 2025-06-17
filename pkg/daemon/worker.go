@@ -9,7 +9,7 @@ import (
 func (d *Daemon) Worker() *worker.Worker {
 	return worker.New(worker.Config{
 		Han: []handler.Interface{
-			privatekey.New(privatekey.Config{Env: d.env, Log: d.log, Reg: d.reg}),
+			privatekey.New(privatekey.Config{Env: d.env, Log: d.log, Met: d.met}),
 		},
 		Log: d.log,
 	})

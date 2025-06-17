@@ -1,15 +1,11 @@
 package daemon
 
 import (
-	"fmt"
-
 	"github.com/0xSplits/specta/pkg/envvar"
-	"github.com/0xSplits/specta/pkg/registry"
+	"github.com/0xSplits/specta/pkg/recorder"
 	"github.com/xh3b4sd/logger"
-	"github.com/xh3b4sd/tracer"
-	"go.opentelemetry.io/otel/exporters/prometheus"
+	"go.opentelemetry.io/otel/metric"
 	otelmetric "go.opentelemetry.io/otel/metric"
-	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
 )
 
 type Config struct {
@@ -19,7 +15,7 @@ type Config struct {
 type Daemon struct {
 	env envvar.Env
 	log logger.Interface
-	reg registry.Interface
+	met otelmetric.Meter
 }
 
 func New(c Config) *Daemon {
@@ -30,38 +26,22 @@ func New(c Config) *Daemon {
 		})
 	}
 
+	var met metric.Meter
+	{
+		met = recorder.NewMeter(recorder.MeterConfig{
+			Env: c.Env.Environment,
+		})
+	}
+
 	log.Log(
 		"level", "info",
 		"message", "daemon is starting",
 		"environment", c.Env.Environment,
 	)
 
-	var reg registry.Interface
-	{
-		reg = registry.New(registry.Config{
-			Log: log,
-			Met: mustCreateOpenTelemetryMeterInterface(c),
-		})
-	}
-
 	return &Daemon{
 		env: c.Env,
 		log: log,
-		reg: reg,
+		met: met,
 	}
-}
-
-func createNewMeterNameWithEnvironment(env string) string {
-	return fmt.Sprintf("specta.%s.splits.org", env)
-}
-
-func mustCreateOpenTelemetryMeterInterface(cfg Config) otelmetric.Meter {
-	exp, err := prometheus.New()
-	if err != nil {
-		tracer.Panic(tracer.Mask(err))
-	}
-
-	return sdkmetric.NewMeterProvider(
-		sdkmetric.WithReader(exp),
-	).Meter(createNewMeterNameWithEnvironment(cfg.Env.Environment))
 }

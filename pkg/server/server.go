@@ -22,6 +22,7 @@ type Config struct {
 	Int []twirp.Interceptor
 	// Lis is the main HTTP listener bound to some configured host and port.
 	Lis net.Listener
+	// Log is the structured logger passed down the stack.
 	Log logger.Interface
 	// Mid are the protocol specific transport layer middlewares executed before
 	// any RPC handler.
