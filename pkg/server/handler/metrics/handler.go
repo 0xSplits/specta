@@ -36,7 +36,7 @@ func New(c Config) *Handler {
 	{
 		nam := "teams_bridge_total"
 		cou[nam] = recorder.NewCounter(recorder.CounterConfig{
-			Des: "the amount of total bridge transactions",
+			Des: "the total amount of bridge transactions",
 			Lab: map[string][]string{
 				"success": {"true", "false"},
 			},

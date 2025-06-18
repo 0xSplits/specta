@@ -15,6 +15,7 @@ func tesHan() metrics.API {
 		Log: logger.Fake(),
 		Met: recorder.NewMeter(recorder.MeterConfig{
 			Env: "testing",
+			Ver: "v0.1.0",
 		}),
 	})
 }
