@@ -19,7 +19,7 @@ func (h *Handler) Ensure() error {
 	}
 
 	{
-		err = h.reg.Counter("aws_ec2_keypair_total", float64(len(out.KeyPairs)), nil)
+		err = h.reg.Counter(Metric, float64(len(out.KeyPairs)), nil)
 		if err != nil {
 			return tracer.Mask(err)
 		}

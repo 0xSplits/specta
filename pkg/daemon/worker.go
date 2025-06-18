@@ -6,6 +6,7 @@ import (
 
 	"github.com/0xSplits/specta/pkg/worker"
 	"github.com/0xSplits/specta/pkg/worker/handler"
+	"github.com/0xSplits/specta/pkg/worker/handler/endpoint"
 	"github.com/0xSplits/specta/pkg/worker/handler/keypair"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -20,6 +21,8 @@ func (d *Daemon) Worker() *worker.Worker {
 
 	return worker.New(worker.Config{
 		Han: []handler.Interface{
+			endpoint.New(endpoint.Config{Env: d.env, Log: d.log, Met: d.met, Ser: "server"}),
+			endpoint.New(endpoint.Config{Env: d.env, Log: d.log, Met: d.met, Ser: "specta"}),
 			keypair.New(keypair.Config{Aws: cfg, Env: d.env, Log: d.log, Met: d.met}),
 		},
 		Log: d.log,
