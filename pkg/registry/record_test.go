@@ -166,3 +166,70 @@ func Test_Registry_record_counter_success(t *testing.T) {
 		})
 	}
 }
+
+func Test_Registry_record_counter_success_no_labels(t *testing.T) {
+	testCases := []struct {
+		nam string
+		val float64
+		lab map[string]string
+	}{
+		// Case 000
+		{
+			nam: "allowed_counter",
+			val: 38.5,
+			lab: nil,
+		},
+		// Case 001
+		{
+			nam: "allowed_counter",
+			val: 41.0,
+			lab: nil,
+		},
+	}
+
+	for i, tc := range testCases {
+		t.Run(fmt.Sprintf("%03d", i), func(t *testing.T) {
+			var rec *recorder.Fake
+			{
+				rec = recorder.NewFake(recorder.FakeConfig{
+					Lab: map[string][]string{
+						"foo": {"one", "two"},
+					},
+				})
+			}
+
+			var reg Interface
+			{
+				reg = New(Config{
+					Env: envvar.Env{},
+					Log: logger.Fake(),
+
+					Cou: map[string]recorder.Interface{
+						"allowed_counter": rec,
+					},
+					Gau: map[string]recorder.Interface{},
+					His: map[string]recorder.Interface{},
+				})
+			}
+
+			err := reg.Counter(tc.nam, tc.val, tc.lab)
+			if err != nil {
+				t.Fatalf("expected %#v got %#v", nil, err)
+			}
+
+			if len(rec.Recorded().Lab) != 1 {
+				t.Fatalf("expected %#v got %#v", 1, len(rec.Recorded().Lab))
+			}
+			if len(rec.Recorded().Lab[0]) != 0 {
+				t.Fatalf("expected %#v got %#v", 0, len(rec.Recorded().Lab[0]))
+			}
+
+			if len(rec.Recorded().Val) != 1 {
+				t.Fatalf("expected %#v got %#v", 1, len(rec.Recorded().Val))
+			}
+			if rec.Recorded().Val[0] != 38.5 && rec.Recorded().Val[0] != 41.0 {
+				t.Fatalf("expected %#v got %#v", "38.5|41.0", rec.Recorded().Val[0])
+			}
+		})
+	}
+}

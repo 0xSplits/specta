@@ -11,11 +11,15 @@ import (
 
 type MeterConfig struct {
 	Env string
+	Ver string
 }
 
 func NewMeter(c MeterConfig) otelmetric.Meter {
 	if c.Env == "" {
 		tracer.Panic(tracer.Mask(fmt.Errorf("%T.Env must not be empty", c)))
+	}
+	if c.Ver == "" {
+		tracer.Panic(tracer.Mask(fmt.Errorf("%T.Ver must not be empty", c)))
 	}
 
 	exp, err := prometheus.New()
@@ -25,5 +29,8 @@ func NewMeter(c MeterConfig) otelmetric.Meter {
 
 	return sdkmetric.NewMeterProvider(
 		sdkmetric.WithReader(exp),
-	).Meter(fmt.Sprintf("specta.%s.splits.org", c.Env))
+	).Meter(
+		fmt.Sprintf("specta.%s.splits.org", c.Env),   // e.g. otel_scope_name="specta.production.splits.org"
+		otelmetric.WithInstrumentationVersion(c.Ver), // e.g. otel_scope_version="v0.1.0"
+	)
 }

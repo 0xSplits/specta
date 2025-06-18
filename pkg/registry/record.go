@@ -41,14 +41,21 @@ func (r *Registry) record(wht map[string]recorder.Interface, nam string, val flo
 		}
 	}
 
+	// Create the set of labels according to the registry's environment and the
+	// provided key-value pairs. Not all use cases are environment specific, so if
+	// this registry instance does not have any enviroment configured, then we do
+	// not add the "env" label.
+
 	var att []attribute.KeyValue
-	{
+	if r.env.Environment != "" {
 		att = append(att, attribute.String("env", r.env.Environment))
 	}
 
 	for k, v := range lab {
 		att = append(att, attribute.String(k, v))
 	}
+
+	// Record the given data point, with or without labels.
 
 	{
 		rec.Record(val, att...)

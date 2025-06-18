@@ -30,8 +30,11 @@ func (r *run) runE(cmd *cobra.Command, arg []string) error {
 		})
 	}
 
-	{
+	if env.RunServer {
 		go dae.Server().Daemon()
+	}
+
+	if env.RunWorker {
 		go dae.Worker().Daemon()
 	}
 
