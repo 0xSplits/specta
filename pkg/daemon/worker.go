@@ -2,6 +2,7 @@ package daemon
 
 import (
 	"context"
+	"os"
 
 	"github.com/0xSplits/specta/pkg/worker"
 	"github.com/0xSplits/specta/pkg/worker/handler"
@@ -26,7 +27,12 @@ func (d *Daemon) Worker() *worker.Worker {
 }
 
 func musAws() aws.Config {
-	cfg, err := config.LoadDefaultConfig(context.Background(), config.WithRegion("us-west-2"))
+	reg := os.Getenv("AWS_REGION")
+	if reg == "" {
+		reg = "us-west-2"
+	}
+
+	cfg, err := config.LoadDefaultConfig(context.Background(), config.WithRegion(reg))
 	if err != nil {
 		tracer.Panic(tracer.Mask(err))
 	}
