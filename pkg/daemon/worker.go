@@ -20,7 +20,7 @@ func (d *Daemon) Worker() *worker.Worker {
 
 	return worker.New(worker.Config{
 		Han: []handler.Interface{
-			keypair.New(keypair.Config{Aws: cfg, Log: d.log, Met: d.met}),
+			keypair.New(keypair.Config{Aws: cfg, Env: d.env, Log: d.log, Met: d.met}),
 		},
 		Log: d.log,
 	})

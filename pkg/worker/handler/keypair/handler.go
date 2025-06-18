@@ -15,12 +15,14 @@ import (
 
 type Config struct {
 	Aws aws.Config
+	Env envvar.Env
 	Log logger.Interface
 	Met metric.Meter
 }
 
 type Handler struct {
 	ec2 *ec2.Client
+	env envvar.Env
 	log logger.Interface
 	reg registry.Interface
 }
@@ -53,7 +55,7 @@ func New(c Config) *Handler {
 	var reg registry.Interface
 	{
 		reg = registry.New(registry.Config{
-			Env: envvar.Env{},
+			Env: c.Env,
 			Log: c.Log,
 
 			Cou: cou,
@@ -64,6 +66,7 @@ func New(c Config) *Handler {
 
 	return &Handler{
 		ec2: ec2.NewFromConfig(c.Aws),
+		env: c.Env,
 		log: c.Log,
 		reg: reg,
 	}
