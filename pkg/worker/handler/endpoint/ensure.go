@@ -9,11 +9,36 @@ import (
 func (h *Handler) Ensure() error {
 	var err error
 
+	for k, v := range endpoint {
+		var sta int
+		{
+			sta = musSta(v[h.env.Environment])
+		}
+
+		var hlt float64
+		if sta == http.StatusOK {
+			hlt = 1
+		}
+
+		{
+			err = h.reg.Gauge(Metric, hlt, map[string]string{"service": k})
+			if err != nil {
+				return tracer.Mask(err)
+			}
+		}
+	}
+
+	return nil
+}
+
+func musSta(url string) int {
+	var err error
+
 	var res *http.Response
 	{
-		res, err = http.Get(h.end)
+		res, err = http.Get(url)
 		if err != nil {
-			return tracer.Mask(err)
+			return 0
 		}
 	}
 
@@ -21,17 +46,5 @@ func (h *Handler) Ensure() error {
 		defer res.Body.Close()
 	}
 
-	var hlt float64
-	if res.StatusCode == http.StatusOK {
-		hlt = 1
-	}
-
-	{
-		err = h.reg.Gauge(Metric, hlt, map[string]string{"service": h.ser})
-		if err != nil {
-			return tracer.Mask(err)
-		}
-	}
-
-	return nil
+	return res.StatusCode
 }
