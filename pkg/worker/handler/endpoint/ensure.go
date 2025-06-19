@@ -10,20 +10,13 @@ func (h *Handler) Ensure() error {
 	var err error
 
 	for k, v := range endpoint {
-		var res *http.Response
+		var sta int
 		{
-			res, err = http.Get(v[h.env.Environment])
-			if err != nil {
-				return tracer.Mask(err)
-			}
-		}
-
-		{
-			defer res.Body.Close()
+			sta = musSta(v[h.env.Environment])
 		}
 
 		var hlt float64
-		if res.StatusCode == http.StatusOK {
+		if sta == http.StatusOK {
 			hlt = 1
 		}
 
@@ -36,4 +29,22 @@ func (h *Handler) Ensure() error {
 	}
 
 	return nil
+}
+
+func musSta(url string) int {
+	var err error
+
+	var res *http.Response
+	{
+		res, err = http.Get(url)
+		if err != nil {
+			return 0
+		}
+	}
+
+	{
+		defer res.Body.Close()
+	}
+
+	return res.StatusCode
 }
