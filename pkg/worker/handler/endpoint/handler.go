@@ -17,6 +17,11 @@ const (
 
 var (
 	endpoint = map[string]map[string]string{
+		"explorer": {
+			"testing":    "https://test.app.splits.org",
+			"staging":    "https://beta.app.splits.org",
+			"production": "https://app.splits.org",
+		},
 		"server": {
 			"testing":    "https://test.api.splits.org/metrics",
 			"staging":    "https://beta.api.splits.org/metrics",
@@ -27,6 +32,11 @@ var (
 			"staging":    "https://specta.staging.splits.org/metrics",
 			"production": "https://specta.production.splits.org/metrics",
 		},
+		"teams": {
+			"testing":    "https://test.teams.splits.org",
+			"staging":    "https://beta.teams.splits.org",
+			"production": "https://teams.splits.org",
+		},
 	}
 )
 
@@ -34,15 +44,12 @@ type Config struct {
 	Env envvar.Env
 	Log logger.Interface
 	Met metric.Meter
-	Ser string
 }
 
 type Handler struct {
-	end string
 	env envvar.Env
 	log logger.Interface
 	reg registry.Interface
-	ser string
 }
 
 func New(c Config) *Handler {
@@ -51,9 +58,6 @@ func New(c Config) *Handler {
 	}
 	if c.Met == nil {
 		tracer.Panic(tracer.Mask(fmt.Errorf("%T.Met must not be empty", c)))
-	}
-	if c.Ser == "" {
-		tracer.Panic(tracer.Mask(fmt.Errorf("%T.Ser must not be empty", c)))
 	}
 
 	cou := map[string]recorder.Interface{}
@@ -64,7 +68,7 @@ func New(c Config) *Handler {
 		gau[Metric] = recorder.NewGauge(recorder.GaugeConfig{
 			Des: "the health status of an http endpoint",
 			Lab: map[string][]string{
-				"service": {"server", "specta"},
+				"service": {"explorer", "server", "specta", "teams"},
 			},
 			Met: c.Met,
 			Nam: Metric,
@@ -86,10 +90,8 @@ func New(c Config) *Handler {
 	}
 
 	return &Handler{
-		end: endpoint[c.Ser][c.Env.Environment],
 		env: c.Env,
 		log: c.Log,
 		reg: reg,
-		ser: c.Ser,
 	}
 }
