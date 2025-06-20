@@ -54,7 +54,7 @@ func (h *Handler) detail() ([]detail, error) {
 
 		det = append(det, detail{
 			arn: *x.ResourceARN,
-			clu: spl[len(spl)-2],
+			clu: spl[1],
 		})
 	}
 
