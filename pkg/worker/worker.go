@@ -48,6 +48,7 @@ func (w *Worker) Daemon() {
 				w.log.Log(
 					"level", "error",
 					"message", err.Error(),
+					"stack", tracer.Stack(err),
 				)
 			}
 		}
