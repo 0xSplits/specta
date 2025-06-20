@@ -13,15 +13,6 @@ jobs:
   go-build:
     runs-on: "ubuntu-latest"
     steps:
-      - name: Debug runner environment
-        run: |
-          echo "CPUs:" $(nproc)
-          lscpu | grep "Model name"
-          grep -c ^processor /proc/cpuinfo
-          free -h
-          uptime
-          vmstat 1 5
-
       - name: "Setup Git Project"
         uses: "actions/checkout@v4"
 
@@ -36,17 +27,6 @@ jobs:
           go mod tidy
           git diff --exit-code
 
-      - name: "Restore Go Cache"
-        uses: actions/cache/restore@v4
-        id: cache-restore
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-
       - name: "Run Go Build"
         run: |
           go build
@@ -58,16 +38,6 @@ jobs:
       - name: "Check Go Formatting"
         run: |
           test -z $(gofmt -l -s .)
-
-      - name: "Save Go Cache"
-        uses: actions/cache/save@v4
-        id: cache-save
-        if: always() && steps.cache-restore.outputs.cache-hit != 'true'
-        with:
-          key: ${{ steps.cache-restore.outputs.cache-primary-key }}
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
 
       - name: "Check Go Linters"
         run: |
