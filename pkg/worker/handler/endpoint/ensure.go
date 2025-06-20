@@ -9,7 +9,7 @@ import (
 func (h *Handler) Ensure() error {
 	var err error
 
-	for k, v := range endpoint {
+	for k, v := range mapping {
 		var sta int
 		{
 			sta = musSta(v[h.env.Environment])

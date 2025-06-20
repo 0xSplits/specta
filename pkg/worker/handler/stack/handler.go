@@ -1,4 +1,4 @@
-package endpoint
+package stack
 
 import (
 	"fmt"
@@ -6,53 +6,49 @@ import (
 	"github.com/0xSplits/specta/pkg/envvar"
 	"github.com/0xSplits/specta/pkg/recorder"
 	"github.com/0xSplits/specta/pkg/registry"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
+	"github.com/aws/aws-sdk-go-v2/service/resourcegroupstaggingapi"
 	"github.com/xh3b4sd/logger"
 	"github.com/xh3b4sd/tracer"
 	"go.opentelemetry.io/otel/metric"
 )
 
 const (
-	Metric = "http_endpoint_health"
+	Metric = "aws_cloudformation_stack_health"
 )
 
 var (
-	mapping = map[string]map[string]string{
-		"explorer": {
-			"testing":    "https://test.app.splits.org",
-			"staging":    "https://beta.app.splits.org",
-			"production": "https://app.splits.org",
-		},
-		"server": {
-			"testing":    "https://test.api.splits.org/metrics",
-			"staging":    "https://beta.api.splits.org/metrics",
-			"production": "https://api.splits.org/metrics",
-		},
-		"specta": {
-			"testing":    "https://specta.testing.splits.org/metrics",
-			"staging":    "https://specta.staging.splits.org/metrics",
-			"production": "https://specta.production.splits.org/metrics",
-		},
-		"teams": {
-			"testing":    "https://test.teams.splits.org",
-			"staging":    "https://beta.teams.splits.org",
-			"production": "https://teams.splits.org",
-		},
+	mapping = map[string]string{
+		"CacheStack":     "cache",
+		"DiscoveryStack": "discovery",
+		"FargateStack":   "server",
+		"RdsStack":       "database",
+		"SpectaStack":    "specta",
+		"TelemetryStack": "alloy",
+		"VpcStack":       "network",
 	}
 )
 
 type Config struct {
+	Aws aws.Config
 	Env envvar.Env
 	Log logger.Interface
 	Met metric.Meter
 }
 
 type Handler struct {
+	cfc *cloudformation.Client
 	env envvar.Env
 	log logger.Interface
 	reg registry.Interface
+	tag *resourcegroupstaggingapi.Client
 }
 
 func New(c Config) *Handler {
+	if c.Aws.Region == "" {
+		tracer.Panic(tracer.Mask(fmt.Errorf("%T.Aws must not be empty", c)))
+	}
 	if c.Log == nil {
 		tracer.Panic(tracer.Mask(fmt.Errorf("%T.Log must not be empty", c)))
 	}
@@ -66,9 +62,9 @@ func New(c Config) *Handler {
 
 	{
 		gau[Metric] = recorder.NewGauge(recorder.GaugeConfig{
-			Des: "the health status of an http endpoint",
+			Des: "the health status of cloudformation stacks",
 			Lab: map[string][]string{
-				"service": {"explorer", "server", "specta", "teams"},
+				"stack": {"root", "alloy", "cache", "database", "discovery", "network", "specta", "server"},
 			},
 			Met: c.Met,
 			Nam: Metric,
@@ -90,8 +86,10 @@ func New(c Config) *Handler {
 	}
 
 	return &Handler{
+		cfc: cloudformation.NewFromConfig(c.Aws),
 		env: c.Env,
 		log: c.Log,
 		reg: reg,
+		tag: resourcegroupstaggingapi.NewFromConfig(c.Aws),
 	}
 }

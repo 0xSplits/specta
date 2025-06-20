@@ -9,6 +9,7 @@ import (
 	"github.com/0xSplits/specta/pkg/worker/handler/container"
 	"github.com/0xSplits/specta/pkg/worker/handler/endpoint"
 	"github.com/0xSplits/specta/pkg/worker/handler/keypair"
+	"github.com/0xSplits/specta/pkg/worker/handler/stack"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/xh3b4sd/tracer"
@@ -25,6 +26,7 @@ func (d *Daemon) Worker() *worker.Worker {
 			container.New(container.Config{Aws: cfg, Env: d.env, Log: d.log, Met: d.met}),
 			endpoint.New(endpoint.Config{Env: d.env, Log: d.log, Met: d.met}),
 			keypair.New(keypair.Config{Aws: cfg, Env: d.env, Log: d.log, Met: d.met}),
+			stack.New(stack.Config{Aws: cfg, Env: d.env, Log: d.log, Met: d.met}),
 		},
 		Log: d.log,
 	})
