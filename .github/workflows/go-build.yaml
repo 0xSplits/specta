@@ -36,7 +36,8 @@ jobs:
           go mod tidy
           git diff --exit-code
 
-      - uses: actions/cache/restore@v4
+      - name: "Restore Go Cache"
+        uses: actions/cache/restore@v4
         id: cache-restore
         with:
           path: |
@@ -58,7 +59,8 @@ jobs:
         run: |
           test -z $(gofmt -l -s .)
 
-      - uses: actions/cache/save@v4
+      - name: "Save Go Cache"
+        uses: actions/cache/save@v4
         id: cache-save
         if: always() && steps.cache-restore.outputs.cache-hit != 'true'
         with:
