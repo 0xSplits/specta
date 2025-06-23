@@ -28,8 +28,10 @@ jobs:
           git diff --exit-code
 
       - name: "Run Go Build"
+        env:
+          CGO_ENABLED: "0"
         run: |
-          go build
+          go build .
 
       - name: "Check Go Tests"
         run: |
