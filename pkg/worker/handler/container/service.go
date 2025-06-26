@@ -10,7 +10,7 @@ import (
 )
 
 type service struct {
-	// hlt is the binary container health status, either 0 or 1.
+	// hlt is the container health status, either 0.0, 0.5 or 1.0.
 	hlt float64
 	// lab is the respective service label, e.g. alloy or specta.
 	lab string
@@ -62,9 +62,14 @@ func (h *Handler) service(det []detail) ([]service, error) {
 				}
 			}
 
-			var hlt float64 = 1
-			if y.DesiredCount == 0 || y.RunningCount != y.DesiredCount {
-				hlt = 0
+			var hlt float64
+			switch {
+			case y.RunningCount == 0:
+				hlt = 0 // no containers running
+			case y.RunningCount != y.DesiredCount:
+				hlt = 0.5 // not enough containers running
+			default:
+				hlt = 1 // all containers running
 			}
 
 			ser = append(ser, service{
