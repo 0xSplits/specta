@@ -20,14 +20,15 @@ const (
 
 var (
 	mapping = map[string]string{
-		"CacheStack":     "cache",
-		"DiscoveryStack": "discovery",
-		"FargateStack":   "fargate",
-		"RdsStack":       "database",
-		"ServerStack":    "server",
-		"SpectaStack":    "specta",
-		"TelemetryStack": "alloy",
-		"VpcStack":       "network",
+		"CacheStack":      "cache",
+		"DeploymentStack": "deployment",
+		"DiscoveryStack":  "discovery",
+		"FargateStack":    "fargate",
+		"RdsStack":        "database",
+		"ServerStack":     "server",
+		"SpectaStack":     "specta",
+		"TelemetryStack":  "alloy",
+		"VpcStack":        "network",
 	}
 )
 
@@ -65,7 +66,7 @@ func New(c Config) *Handler {
 		gau[Metric] = recorder.NewGauge(recorder.GaugeConfig{
 			Des: "the health status of cloudformation stacks",
 			Lab: map[string][]string{
-				"stack": {"root", "alloy", "cache", "database", "discovery", "fargate", "network", "specta", "server"},
+				"stack": {"root", "alloy", "cache", "database", "deployment", "discovery", "fargate", "network", "specta", "server"},
 			},
 			Met: c.Met,
 			Nam: Metric,
