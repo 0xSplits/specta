@@ -22,10 +22,15 @@ var (
 			"staging":    "https://beta.app.splits.org",
 			"production": "https://app.splits.org",
 		},
-		"server": {
+		"fargate": {
 			"testing":    "https://test.api.splits.org/metrics",
 			"staging":    "https://beta.api.splits.org/metrics",
 			"production": "https://api.splits.org/metrics",
+		},
+		"server": {
+			"testing":    "https://server.testing.splits.org/metrics",
+			"staging":    "https://server.staging.splits.org/metrics",
+			"production": "https://server.production.splits.org/metrics",
 		},
 		"specta": {
 			"testing":    "https://specta.testing.splits.org/metrics",
@@ -68,7 +73,7 @@ func New(c Config) *Handler {
 		gau[Metric] = recorder.NewGauge(recorder.GaugeConfig{
 			Des: "the health status of an http endpoint",
 			Lab: map[string][]string{
-				"service": {"explorer", "server", "specta", "teams"},
+				"service": {"explorer", "fargate", "server", "specta", "teams"},
 			},
 			Met: c.Met,
 			Nam: Metric,

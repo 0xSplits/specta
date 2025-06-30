@@ -2,6 +2,7 @@ package endpoint
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/xh3b4sd/tracer"
 )
@@ -10,14 +11,26 @@ func (h *Handler) Ensure() error {
 	var err error
 
 	for k, v := range mapping {
+		var url string
+		{
+			url = v[h.env.Environment]
+		}
+
 		var sta int
 		{
-			sta = musSta(v[h.env.Environment])
+			sta = musSta(url)
 		}
 
 		var hlt float64
 		if sta == http.StatusOK {
 			hlt = 1
+		} else {
+			h.log.Log(
+				"level", "info",
+				"message", "observed non-ok status code",
+				"url", url,
+				"code", strconv.Itoa(sta),
+			)
 		}
 
 		{
