@@ -19,7 +19,7 @@ var (
 	mapping = map[string]map[string]string{
 		"explorer": {
 			"testing":    "https://test.app.splits.org",
-			"staging":    "https://beta.app.splits.org",
+			"staging":    "https://dev.app.splits.org",
 			"production": "https://app.splits.org",
 		},
 		"fargate": {
@@ -39,7 +39,7 @@ var (
 		},
 		"teams": {
 			"testing":    "https://test.teams.splits.org",
-			"staging":    "https://beta.teams.splits.org",
+			"staging":    "https://dev.teams.splits.org",
 			"production": "https://teams.splits.org",
 		},
 	}
