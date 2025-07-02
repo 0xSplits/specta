@@ -17,20 +17,18 @@ const (
 
 var (
 	mapping = map[string]map[string]string{
+		"api": {
+			"production": "https://api.splits.org/metrics",
+		},
 		"explorer": {
 			"testing":    "https://test.app.splits.org",
 			"staging":    "https://dev.app.splits.org",
 			"production": "https://app.splits.org",
 		},
-		"fargate": {
-			"testing":    "https://test.api.splits.org/metrics",
-			"staging":    "https://beta.api.splits.org/metrics",
-			"production": "https://api.splits.org/metrics",
-		},
 		"server": {
 			"testing":    "https://server.testing.splits.org/metrics",
 			"staging":    "https://server.staging.splits.org/metrics",
-			"production": "https://server.production.splits.org/metrics",
+			"production": "https://server.production.splits.org/metrics", // api.splits.org
 		},
 		"specta": {
 			"testing":    "https://specta.testing.splits.org/metrics",
@@ -73,7 +71,7 @@ func New(c Config) *Handler {
 		gau[Metric] = recorder.NewGauge(recorder.GaugeConfig{
 			Des: "the health status of an http endpoint",
 			Lab: map[string][]string{
-				"service": {"explorer", "fargate", "server", "specta", "teams"},
+				"service": {"api", "explorer", "server", "specta", "teams"},
 			},
 			Met: c.Met,
 			Nam: Metric,

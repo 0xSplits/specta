@@ -22,6 +22,7 @@ func (d *Daemon) Worker() *worker.Worker {
 	}
 
 	return worker.New(worker.Config{
+		Env: d.env,
 		Han: []handler.Interface{
 			container.New(container.Config{Aws: cfg, Env: d.env, Log: d.log, Met: d.met}),
 			endpoint.New(endpoint.Config{Env: d.env, Log: d.log, Met: d.met}),
@@ -29,6 +30,7 @@ func (d *Daemon) Worker() *worker.Worker {
 			stack.New(stack.Config{Aws: cfg, Env: d.env, Log: d.log, Met: d.met}),
 		},
 		Log: d.log,
+		Met: d.met,
 	})
 }
 

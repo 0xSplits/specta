@@ -9,6 +9,7 @@ import (
 )
 
 type HistogramConfig struct {
+	Buc []float64
 	Des string
 	Lab map[string][]string
 	Met metric.Meter
@@ -21,7 +22,7 @@ type Histogram struct {
 }
 
 func NewHistogram(c HistogramConfig) *Histogram {
-	his, err := c.Met.Float64Histogram(c.Nam, metric.WithDescription(c.Des))
+	his, err := c.Met.Float64Histogram(c.Nam, metric.WithDescription(c.Des), metric.WithExplicitBucketBoundaries(c.Buc...))
 	if err != nil {
 		tracer.Panic(tracer.Mask(err))
 	}
