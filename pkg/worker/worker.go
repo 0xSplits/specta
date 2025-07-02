@@ -72,17 +72,17 @@ func New(c Config) *Worker {
 				"success": {"true", "false"},
 			},
 			Buc: []float64{
-				0.05, //   50 ms
 				0.10, //  100 ms
 				0.15, //  150 ms
 				0.20, //  200 ms
 				0.25, //  250 ms
-
 				0.50, //  500 ms
+
 				1.00, // 1000 ms
 				1.50, // 1500 ms
 				2.00, // 2000 ms
 				2.50, // 2500 ms
+				5.00, // 5000 ms
 			},
 			Met: c.Met,
 			Nam: MetricDuration,
