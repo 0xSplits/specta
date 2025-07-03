@@ -55,10 +55,23 @@ func New(c Config) *Handler {
 
 	{
 		nam := "teams_bridge_duration_seconds"
-		cou[nam] = recorder.NewHistogram(recorder.HistogramConfig{
-			Des: "the time it takes for bridge transactions",
+		his[nam] = recorder.NewHistogram(recorder.HistogramConfig{
+			Des: "the time it takes for bridge transactions to complete",
 			Lab: map[string][]string{
 				"success": {"true", "false"},
+			},
+			Buc: []float64{
+				0.1, //     100ms
+				0.5, //     500ms
+				1.0, //   1,000ms
+				2.5, //   2,500ms
+				5.0, //   5,000ms
+
+				10.0, // 10,000ms
+				15.0, // 15,000ms
+				20.0, // 20,000ms
+				25.0, // 25,000ms
+				30.0, // 30,000ms
 			},
 			Met: c.Met,
 			Nam: nam,

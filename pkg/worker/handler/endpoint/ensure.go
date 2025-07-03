@@ -12,8 +12,12 @@ func (h *Handler) Ensure() error {
 
 	for k, v := range mapping {
 		var url string
+		var exi bool
 		{
-			url = v[h.env.Environment]
+			url, exi = v[h.env.Environment]
+			if !exi {
+				continue
+			}
 		}
 
 		var sta int
