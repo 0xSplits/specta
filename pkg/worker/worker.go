@@ -51,7 +51,6 @@ func New(c Config) *Worker {
 		cou[MetricTotal] = recorder.NewCounter(recorder.CounterConfig{
 			Des: "the total amount of worker handler executions",
 			Lab: map[string][]string{
-				"service": {"specta"},
 				"success": {"true", "false"},
 			},
 			Met: c.Met,
@@ -68,7 +67,6 @@ func New(c Config) *Worker {
 			Des: "the time it takes for worker handler executions to complete",
 			Lab: map[string][]string{
 				"handler": {"container", "endpoint", "keypair", "stack"},
-				"service": {"specta"},
 				"success": {"true", "false"},
 			},
 			Buc: []float64{
@@ -178,8 +176,10 @@ func (w *Worker) ensure(han handler.Interface) error {
 	// use the time.Now() instance of this cycle's start time.
 
 	var lat time.Duration
+	var suc string
 	{
 		lat = time.Since(sta)
+		suc = strconv.FormatBool(err == nil)
 	}
 
 	w.log.Log(
@@ -187,13 +187,12 @@ func (w *Worker) ensure(han handler.Interface) error {
 		"message", "executed worker handler",
 		"handler", handler.Name(han),
 		"latency", lat.String(),
-		"success", strconv.FormatBool(err == nil),
+		"success", suc,
 	)
 
 	{
 		lab := map[string]string{
-			"service": "specta",
-			"success": strconv.FormatBool(err == nil),
+			"success": suc,
 		}
 
 		err := w.reg.Counter(MetricTotal, 1, lab)
@@ -205,8 +204,7 @@ func (w *Worker) ensure(han handler.Interface) error {
 	{
 		lab := map[string]string{
 			"handler": handler.Name(han),
-			"service": "specta",
-			"success": strconv.FormatBool(err == nil),
+			"success": suc,
 		}
 
 		err := w.reg.Histogram(MetricDuration, lat.Seconds(), lab)
