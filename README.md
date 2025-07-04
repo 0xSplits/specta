@@ -3,7 +3,8 @@
 This repository is the observability backend using the generated Golang code as
 defined by the [Specta Protos]. The relevant components here are described by
 the `server` and `worker` packages. Amongst other things, Specta provides the
-real-time data for our infrastructure status dashboard.
+real-time data for our infrastructure status dashboard as scraped by our [Alloy
+Setup].
 
 ![Specta Overview](.github/assets/Specta-Overview.svg)
 
@@ -139,6 +140,7 @@ docker run \
   daemon
 ```
 
+[Alloy Setup]: https://github.com/0xSplits/alloy
 [Amazon ECR]: https://docs.aws.amazon.com/ecr
 [Cobra]: https://github.com/spf13/cobra
 [distroless]: https://github.com/GoogleContainerTools/distroless
