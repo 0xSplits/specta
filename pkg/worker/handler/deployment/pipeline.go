@@ -57,41 +57,50 @@ func (h *Handler) pipeline(det []detail) ([]pipeline, error) {
 		}
 
 		for _, y := range out.PipelineExecutionSummaries {
-			// We skip all pipeline executions that are too far in the past, given
-			// Specta's own launch time.
-			if y.StartTime.Before(h.sta) {
-				continue
-			}
-
-			// We skip all pipeline executions that we already observed, given the
-			// cached execution ID.
-			if h.cac.Contains(*y.PipelineExecutionId) {
-				continue
-			}
-
-			var lat time.Duration
-			{
-				lat = y.LastUpdateTime.Sub(*y.StartTime)
-			}
-
-			var suc string
-			if y.Status == types.PipelineExecutionStatusSucceeded {
-				suc = "true"
-			} else {
-				suc = "false"
-			}
-
-			pip = append(pip, pipeline{
-				eid: *y.PipelineExecutionId,
-				lat: lat,
-				suc: suc,
-			})
-
-			{
-				h.cac.Add(*y.PipelineExecutionId, struct{}{})
-			}
+			pip = h.append(pip, y)
 		}
 	}
 
 	return pip, nil
+}
+
+// append manages the skipping behaviour of already observed pipeline
+// executions, as well as those pipeline executions that occured in the past
+// before the internal start time.
+func (h *Handler) append(pip []pipeline, sum types.PipelineExecutionSummary) []pipeline {
+	// We skip all pipeline executions that are too far in the past, given
+	// Specta's own launch time.
+	if sum.StartTime.Before(h.sta) {
+		return pip
+	}
+
+	// We skip all pipeline executions that we already observed, given the
+	// cached execution ID.
+	if h.cac.Contains(*sum.PipelineExecutionId) {
+		return pip
+	}
+
+	var lat time.Duration
+	{
+		lat = sum.LastUpdateTime.Sub(*sum.StartTime)
+	}
+
+	var suc string
+	if sum.Status == types.PipelineExecutionStatusSucceeded {
+		suc = "true"
+	} else {
+		suc = "false"
+	}
+
+	pip = append(pip, pipeline{
+		eid: *sum.PipelineExecutionId,
+		lat: lat,
+		suc: suc,
+	})
+
+	{
+		h.cac.Add(*sum.PipelineExecutionId, struct{}{})
+	}
+
+	return pip
 }
