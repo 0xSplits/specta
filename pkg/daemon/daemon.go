@@ -37,7 +37,7 @@ func New(c Config) *Daemon {
 
 	log.Log(
 		"level", "info",
-		"message", "daemon is starting",
+		"message", "daemon is launching procs",
 		"environment", c.Env.Environment,
 	)
 
