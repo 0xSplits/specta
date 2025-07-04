@@ -6,7 +6,7 @@ require (
 	github.com/0xSplits/spectagocode v0.1.1
 	github.com/aws/aws-sdk-go-v2 v1.36.5
 	github.com/aws/aws-sdk-go-v2/config v1.29.17
-	github.com/aws/aws-sdk-go-v2/service/ec2 v1.229.0
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.230.0
 	github.com/google/gofuzz v1.2.0
 	github.com/gorilla/mux v1.8.1
 	github.com/joho/godotenv v1.5.1
