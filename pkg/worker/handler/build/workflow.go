@@ -23,7 +23,7 @@ const (
 type workflow struct {
 	// kin is the workflow type that we instrument here, e.g. check or image.
 	kin string
-	// lat is the duration that any given pipeline execution took to complete.
+	// lat is the duration that any given workflow execution took to complete.
 	lat time.Duration
 	// rep is the repository label that we instrument here.
 	rep string
@@ -34,13 +34,13 @@ type workflow struct {
 	suc string
 }
 
-// pipeline determines the latency of CodePipeline executions for the provided
-// pipeline details. Pipeline executions already observed are being skipped.
-// Pipeline executions with a start time before Specta launched are also being
-// skipped. Both of those filters intent to prevent the duplication of latency
-// measurements and their respective success/failure counts. With this stateless
-// approach we prefer to rather miss a measurement than counting it twice,
-// because counting twice creates inconsistencies in our SLOs.
+// workflow determines the latency of build runs for the provided workflow
+// details. Build runs already observed are being skipped. Build runs with a
+// start time before Specta launched are also being skipped. Both of those
+// filters intent to prevent the duplication of latency measurements and their
+// respective success/failure counts. With this stateless approach we prefer to
+// rather miss a measurement than counting it twice, because counting twice
+// creates inconsistencies in our SLOs.
 func (h *Handler) workflow(det []detail) ([]workflow, error) {
 	var err error
 
@@ -71,9 +71,8 @@ func (h *Handler) workflow(det []detail) ([]workflow, error) {
 	return wor, nil
 }
 
-// append manages the skipping behaviour of already observed pipeline
-// executions, as well as those pipeline executions that occured in the past
-// before the internal start time.
+// append manages the skipping behaviour of already observed build runs, as well
+// as those build runs that occured in the past before the internal start time.
 func (h *Handler) append(wor []workflow, det detail, run *github.WorkflowRun) []workflow {
 	// We skip all workflow executions that are too far in the past, given
 	// Specta's own launch time.
