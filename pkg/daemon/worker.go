@@ -6,6 +6,7 @@ import (
 
 	"github.com/0xSplits/specta/pkg/worker"
 	"github.com/0xSplits/specta/pkg/worker/handler"
+	"github.com/0xSplits/specta/pkg/worker/handler/build"
 	"github.com/0xSplits/specta/pkg/worker/handler/container"
 	"github.com/0xSplits/specta/pkg/worker/handler/deployment"
 	"github.com/0xSplits/specta/pkg/worker/handler/endpoint"
@@ -25,6 +26,7 @@ func (d *Daemon) Worker() *worker.Worker {
 	return worker.New(worker.Config{
 		Env: d.env,
 		Han: []handler.Interface{
+			build.New(build.Config{Env: d.env, Log: d.log, Met: d.met}),
 			deployment.New(deployment.Config{Aws: cfg, Env: d.env, Log: d.log, Met: d.met}),
 			container.New(container.Config{Aws: cfg, Env: d.env, Log: d.log, Met: d.met}),
 			endpoint.New(endpoint.Config{Env: d.env, Log: d.log, Met: d.met}),

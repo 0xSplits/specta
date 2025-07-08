@@ -67,7 +67,7 @@ func New(c Config) *Worker {
 		his[MetricDuration] = recorder.NewHistogram(recorder.HistogramConfig{
 			Des: "the time it takes for worker handler executions to complete",
 			Lab: map[string][]string{
-				"handler": {"container", "deployment", "endpoint", "keypair", "stack"},
+				"handler": hanNam(c.Han),
 				"success": {"true", "false"},
 			},
 			Buc: []float64{
@@ -237,4 +237,17 @@ func (w *Worker) error(err error) {
 		"message", err.Error(),
 		"stack", tracer.Stack(err),
 	)
+}
+
+// hanNam returns the list of worker handler names matching the given list of
+// worker handlers. E.g. this function should enable the worker's metrics
+// registry to whitelist all worker handlers in the pkg/worker/handler package.
+func hanNam(han []handler.Interface) []string {
+	var lis []string
+
+	for _, x := range han {
+		lis = append(lis, handler.Name(x))
+	}
+
+	return lis
 }

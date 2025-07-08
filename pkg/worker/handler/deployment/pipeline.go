@@ -80,6 +80,12 @@ func (h *Handler) append(pip []pipeline, sum types.PipelineExecutionSummary) []p
 		return pip
 	}
 
+	// We skip all pipeline executions that have not yet completed, given the
+	// pipeline status string.
+	if pipSkp(sum.Status) {
+		return pip
+	}
+
 	var lat time.Duration
 	{
 		lat = sum.LastUpdateTime.Sub(*sum.StartTime)
@@ -103,4 +109,8 @@ func (h *Handler) append(pip []pipeline, sum types.PipelineExecutionSummary) []p
 	}
 
 	return pip
+}
+
+func pipSkp(sta types.PipelineExecutionStatus) bool {
+	return sta == types.PipelineExecutionStatusInProgress || sta == types.PipelineExecutionStatusStopping
 }
