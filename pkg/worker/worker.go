@@ -67,7 +67,7 @@ func New(c Config) *Worker {
 		his[MetricDuration] = recorder.NewHistogram(recorder.HistogramConfig{
 			Des: "the time it takes for worker handler executions to complete",
 			Lab: map[string][]string{
-				"handler": {"container", "deployment", "endpoint", "keypair", "stack"},
+				"handler": handler.Names(c.Han),
 				"success": {"true", "false"},
 			},
 			Buc: []float64{

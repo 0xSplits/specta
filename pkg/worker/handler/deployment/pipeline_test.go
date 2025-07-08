@@ -35,7 +35,7 @@ func Test_Worker_Handler_Deployment_append(t *testing.T) {
 				{eid: "foo", lat: 3 * time.Second, suc: "true"},
 			},
 		},
-		// Case 001, "foo" already cached, not append
+		// Case 001, "foo" already cached, skip
 		{
 			sta: time.Unix(3, 0),
 			pip: []pipeline{
@@ -51,7 +51,7 @@ func Test_Worker_Handler_Deployment_append(t *testing.T) {
 				{eid: "foo", lat: 3 * time.Second, suc: "true"},
 			},
 		},
-		// Case 002, empty, past start time, not append
+		// Case 002, empty, before start time, skip
 		{
 			sta: time.Unix(6, 0),
 			pip: []pipeline{},
@@ -60,6 +60,18 @@ func Test_Worker_Handler_Deployment_append(t *testing.T) {
 				StartTime:           aws.Time(time.Unix(5, 0)),
 				LastUpdateTime:      aws.Time(time.Unix(8, 0)),
 				Status:              types.PipelineExecutionStatusSucceeded,
+			},
+			app: []pipeline{},
+		},
+		// Case 003, still running, skip
+		{
+			sta: time.Unix(3, 0),
+			pip: []pipeline{},
+			sum: types.PipelineExecutionSummary{
+				PipelineExecutionId: aws.String("foo"),
+				StartTime:           aws.Time(time.Unix(5, 0)),
+				LastUpdateTime:      aws.Time(time.Unix(8, 0)),
+				Status:              types.PipelineExecutionStatusInProgress,
 			},
 			app: []pipeline{},
 		},

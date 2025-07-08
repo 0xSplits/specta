@@ -11,6 +11,7 @@ import (
 
 type Env struct {
 	Environment string `split_words:"true" required:"true"`
+	GithubToken string `split_words:"true" required:"true"`
 	HttpHost    string `split_words:"true" required:"true"`
 	HttpPort    string `split_words:"true" required:"true"`
 	LogLevel    string `split_words:"true" required:"true"`

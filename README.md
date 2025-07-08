@@ -91,15 +91,13 @@ environment variable with one of these values: `development` `testing` `staging`
 `production`. Any other value will cause an early runtime panic.
 
 ```
-SPECTA_ENVIRONMENT=development specta daemon
+SPECTA_ENVIRONMENT=development SPECTA_GITHUB_TOKEN=todo specta daemon
 ```
 
 ```
 { "time":"2025-07-04 14:09:06", "level":"info", "message":"daemon is launching procs", "environment":"development", "caller":".../pkg/daemon/daemon.go:38" }
 { "time":"2025-07-04 14:09:06", "level":"info", "message":"server is accepting calls", "address":"127.0.0.1:7777",  "caller":".../pkg/server/server.go:95" }
 { "time":"2025-07-04 14:09:06", "level":"info", "message":"worker is executing tasks", "pipelines":"5",             "caller":".../pkg/worker/worker.go:110" }
-
-
 ```
 
 ### Releases
