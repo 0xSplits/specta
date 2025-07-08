@@ -9,10 +9,14 @@ import (
 )
 
 const (
-	// max is the maximum amount of workflow executions to fetch at once. We never
-	// have to look too far into the past, because we only ever have to observe
-	// those builds that we have missed during either the most recent observation,
-	// or the last deployment/downtime.
+	// max is the maximum amount of workflow runs to fetch at once. We never have
+	// to look too far into the past, because we only ever have to observe those
+	// builds that we have missed during either the most recent observation, or
+	// the last deployment/downtime. This number is a bit larger because
+	// repositories like 0xSplits/splits contain many different workflows for that
+	// monorepo, and in order to find the build runs that we are interested in, we
+	// have to gather a broader picture for our workflows of interest not be be
+	// "crowded out".
 	max = 50
 )
 
@@ -53,7 +57,7 @@ func (h *Handler) workflow(det []detail) ([]workflow, error) {
 
 		var out *github.WorkflowRuns
 		{
-			out, _, err = h.git.Actions.ListRepositoryWorkflowRuns(context.Background(), Organization, x.name, inp)
+			out, _, err = h.git.Actions.ListRepositoryWorkflowRuns(context.Background(), Organization, x.repo, inp)
 			if err != nil {
 				return nil, tracer.Mask(err)
 			}

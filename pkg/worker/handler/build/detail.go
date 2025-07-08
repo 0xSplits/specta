@@ -1,9 +1,10 @@
 package build
 
 type detail struct {
-	// name is the repository name that we are instrumenting.
-	name string
-	// label is the metric label used to instrument this project.
+	// repo is the repository name that we are fetching build information for from
+	// the Github API.
+	repo string
+	// label is the metric label used to instrument this project in Grafana.
 	label string
 	// check is the name of the workflow within this repository running all
 	// relevant verification steps for this project.
@@ -20,13 +21,13 @@ func (h *Handler) detail() ([]detail, error) {
 	{
 		det = []detail{
 			{
-				name:  "specta",
+				repo:  "specta",
 				label: "specta",
 				check: "go-build",
 				image: "docker-release",
 			},
 			{
-				name:  "splits",
+				repo:  "splits",
 				label: "server",
 				check: "typescript-server",
 				image: "docker-push",
