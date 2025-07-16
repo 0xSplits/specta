@@ -31,7 +31,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.61.0
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.42.2
-	github.com/aws/aws-sdk-go-v2/service/ecs v1.58.1
+	github.com/aws/aws-sdk-go-v2/service/ecs v1.60.0
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.12.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.12.17 // indirect
 	github.com/aws/aws-sdk-go-v2/service/resourcegroupstaggingapi v1.26.6
