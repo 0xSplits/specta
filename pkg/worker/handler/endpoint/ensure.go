@@ -11,36 +11,29 @@ func (h *Handler) Ensure() error {
 	var err error
 
 	for k, v := range mapping {
-		var url string
-		var exi bool
-		{
-			url, exi = v[h.env.Environment]
-			if !exi {
-				continue
+		for _, x := range v[h.env.Environment] {
+			var sta int
+			{
+				sta = musSta(x)
 			}
-		}
 
-		var sta int
-		{
-			sta = musSta(url)
-		}
+			var hlt float64
+			if sta == http.StatusOK {
+				hlt = 1
+			} else {
+				h.log.Log(
+					"level", "info",
+					"message", "observed non-ok status code",
+					"url", x,
+					"code", strconv.Itoa(sta),
+				)
+			}
 
-		var hlt float64
-		if sta == http.StatusOK {
-			hlt = 1
-		} else {
-			h.log.Log(
-				"level", "info",
-				"message", "observed non-ok status code",
-				"url", url,
-				"code", strconv.Itoa(sta),
-			)
-		}
-
-		{
-			err = h.reg.Gauge(Metric, hlt, map[string]string{"service": k})
-			if err != nil {
-				return tracer.Mask(err)
+			{
+				err = h.reg.Gauge(Metric, hlt, map[string]string{"service": k})
+				if err != nil {
+					return tracer.Mask(err)
+				}
 			}
 		}
 	}
