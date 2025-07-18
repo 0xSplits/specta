@@ -49,7 +49,7 @@ func (h *Handler) detail() ([]detail, error) {
 	for _, x := range out.ResourceTagMappingList {
 		spl := strings.Split(*x.ResourceARN, "/")
 		if len(spl) != 3 {
-			return nil, tracer.Maskf(invalidAmazonResourceNameError, "%s", *x.ResourceARN)
+			return nil, tracer.Mask(invalidAmazonResourceNameError, tracer.Context{Key: "arn", Value: *x.ResourceARN})
 		}
 
 		det = append(det, detail{

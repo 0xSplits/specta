@@ -4,27 +4,27 @@ import (
 	"context"
 	"os"
 
-	"github.com/0xSplits/specta/pkg/worker"
-	"github.com/0xSplits/specta/pkg/worker/handler"
 	"github.com/0xSplits/specta/pkg/worker/handler/build"
 	"github.com/0xSplits/specta/pkg/worker/handler/container"
 	"github.com/0xSplits/specta/pkg/worker/handler/deployment"
 	"github.com/0xSplits/specta/pkg/worker/handler/endpoint"
 	"github.com/0xSplits/specta/pkg/worker/handler/keypair"
 	"github.com/0xSplits/specta/pkg/worker/handler/stack"
+	"github.com/0xSplits/workit/engine"
+	"github.com/0xSplits/workit/handler"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/xh3b4sd/tracer"
 )
 
-func (d *Daemon) Worker() *worker.Worker {
+func (d *Daemon) Worker() *engine.Engine {
 	var cfg aws.Config
 	{
 		cfg = musAws()
 	}
 
-	return worker.New(worker.Config{
-		Env: d.env,
+	return engine.New(engine.Config{
+		Env: d.env.Environment,
 		Han: []handler.Interface{
 			build.New(build.Config{Env: d.env, Log: d.log, Met: d.met}),
 			deployment.New(deployment.Config{Aws: cfg, Env: d.env, Log: d.log, Met: d.met}),

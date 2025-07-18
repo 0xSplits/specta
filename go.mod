@@ -3,7 +3,9 @@ module github.com/0xSplits/specta
 go 1.24
 
 require (
+	github.com/0xSplits/otelgo v0.1.0
 	github.com/0xSplits/spectagocode v0.1.1
+	github.com/0xSplits/workit v0.1.0
 	github.com/aws/aws-sdk-go-v2 v1.36.5
 	github.com/aws/aws-sdk-go-v2/config v1.29.17
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.233.0
@@ -15,12 +17,12 @@ require (
 	github.com/rs/cors v1.11.1
 	github.com/spf13/cobra v1.9.1
 	github.com/twitchtv/twirp v8.1.3+incompatible
-	github.com/xh3b4sd/logger v0.10.0
-	github.com/xh3b4sd/tracer v0.11.1
-	go.opentelemetry.io/otel v1.37.0
-	go.opentelemetry.io/otel/exporters/prometheus v0.59.0
+	github.com/xh3b4sd/logger v0.11.0
+	github.com/xh3b4sd/tracer v1.0.0
+	go.opentelemetry.io/otel v1.37.0 // indirect
+	go.opentelemetry.io/otel/exporters/prometheus v0.59.0 // indirect
 	go.opentelemetry.io/otel/metric v1.37.0
-	go.opentelemetry.io/otel/sdk/metric v1.37.0
+	go.opentelemetry.io/otel/sdk/metric v1.37.0 // indirect
 )
 
 require (
@@ -56,6 +58,6 @@ require (
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.37.0 // indirect
 	go.opentelemetry.io/otel/trace v1.37.0 // indirect
-	golang.org/x/sys v0.33.0 // indirect
+	golang.org/x/sys v0.34.0 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
 )

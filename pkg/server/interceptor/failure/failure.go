@@ -28,48 +28,14 @@ func New(c Config) *Interceptor {
 }
 
 func (i *Interceptor) Method(nex twirp.Method) twirp.Method {
-	return func(ctx context.Context, req interface{}) (interface{}, error) {
+	return func(ctx context.Context, req any) (any, error) {
 		res, err := nex(ctx, req)
 		if err != nil {
-			e, o := err.(*tracer.Error)
-			if o {
-				i.log.Log(
-					"level", "error",
-					"message", e.Error(),
-					"code", e.Code,
-					"description", e.Desc,
-					"docs", e.Docs,
-					"kind", e.Kind,
-					"stack", tracer.Stack(e),
-				)
-
-				c := twirp.ErrorCode(e.Code)
-				if c == "" {
-					c = twirp.Internal
-				}
-
-				var t twirp.Error
-				{
-					t = twirp.NewError(c, e.Error())
-				}
-
-				if e.Desc != "" {
-					t = t.WithMeta("desc", e.Desc)
-				}
-
-				if e.Kind != "" {
-					t = t.WithMeta("kind", e.Kind)
-				}
-
-				return nil, t
-			} else {
-				i.log.Log(
-					"level", "error",
-					"message", err.Error(),
-				)
-
-				return nil, err
-			}
+			i.log.Log(
+				"level", "error",
+				"message", "request failed",
+				"stack", tracer.Json(err),
+			)
 		}
 
 		return res, nil

@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/0xSplits/otelgo/recorder"
+	"github.com/0xSplits/otelgo/registry"
 	"github.com/0xSplits/specta/pkg/envvar"
-	"github.com/0xSplits/specta/pkg/recorder"
-	"github.com/0xSplits/specta/pkg/registry"
 	"github.com/google/go-github/v73/github"
 	lru "github.com/hashicorp/golang-lru/v2"
 	"github.com/xh3b4sd/logger"
@@ -98,7 +98,7 @@ func New(c Config) *Handler {
 	var reg registry.Interface
 	{
 		reg = registry.New(registry.Config{
-			Env: c.Env,
+			Env: c.Env.Environment,
 			Log: c.Log,
 
 			Cou: cou,

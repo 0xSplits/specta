@@ -5,6 +5,9 @@ import (
 )
 
 var ExecutionFailedError = &tracer.Error{
-	Kind: "ExecutionFailedError",
-	Desc: "This internal error implies a severe malfunction of the system.",
+	Description: "This internal error implies a severe malfunction of the system.",
+}
+
+var InvalidFlagError = &tracer.Error{
+	Description: "At least one command line flag was missing or misconfigured.",
 }
