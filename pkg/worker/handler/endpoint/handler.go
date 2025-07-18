@@ -25,7 +25,7 @@ var (
 		"server": {
 			"testing":    {"https://server.testing.splits.org/metrics"},
 			"staging":    {"https://server.staging.splits.org/metrics"},
-			"production": {"https://server.production.splits.org/metrics", "api.splits.org"},
+			"production": {"https://server.production.splits.org/metrics", "https://api.splits.org/metrics"},
 		},
 		"specta": {
 			"testing":    {"https://specta.testing.splits.org/metrics"},
