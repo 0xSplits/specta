@@ -3,9 +3,9 @@ package keypair
 import (
 	"fmt"
 
+	"github.com/0xSplits/otelgo/recorder"
+	"github.com/0xSplits/otelgo/registry"
 	"github.com/0xSplits/specta/pkg/envvar"
-	"github.com/0xSplits/specta/pkg/recorder"
-	"github.com/0xSplits/specta/pkg/registry"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/xh3b4sd/logger"
@@ -58,7 +58,7 @@ func New(c Config) *Handler {
 	var reg registry.Interface
 	{
 		reg = registry.New(registry.Config{
-			Env: c.Env,
+			Env: c.Env.Environment,
 			Log: c.Log,
 
 			Cou: cou,

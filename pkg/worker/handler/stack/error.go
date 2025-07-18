@@ -5,6 +5,5 @@ import (
 )
 
 var missingRootStackError = &tracer.Error{
-	Kind: "missingRootStackError",
-	Desc: "The exporter expected to find exactly one root stack, but no stack was found for teh given environment.",
+	Description: "The exporter expected to find exactly one root stack, but no stack was found for the given environment.",
 }

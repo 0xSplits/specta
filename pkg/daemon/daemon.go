@@ -1,8 +1,8 @@
 package daemon
 
 import (
+	"github.com/0xSplits/otelgo/recorder"
 	"github.com/0xSplits/specta/pkg/envvar"
-	"github.com/0xSplits/specta/pkg/recorder"
 	"github.com/0xSplits/specta/pkg/runtime"
 	"github.com/xh3b4sd/logger"
 	"go.opentelemetry.io/otel/metric"
@@ -31,6 +31,7 @@ func New(c Config) *Daemon {
 	{
 		met = recorder.NewMeter(recorder.MeterConfig{
 			Env: c.Env.Environment,
+			Sco: "specta",
 			Ver: runtime.Tag(),
 		})
 	}

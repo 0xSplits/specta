@@ -52,7 +52,7 @@ func (h *Handler) detail() ([]detail, error) {
 	}
 
 	if len(det) == 0 {
-		return nil, tracer.Maskf(missingRootStackError, "%s", h.env.Environment)
+		return nil, tracer.Mask(missingRootStackError, tracer.Context{Key: "environment", Value: h.env.Environment})
 	}
 
 	return det, nil

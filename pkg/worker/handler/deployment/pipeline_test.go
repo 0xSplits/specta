@@ -6,9 +6,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/0xSplits/otelgo/recorder"
 	"github.com/0xSplits/specta/pkg/envvar"
-	"github.com/0xSplits/specta/pkg/recorder"
-	"github.com/0xSplits/specta/pkg/runtime"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
 	"github.com/xh3b4sd/logger"
@@ -87,7 +86,8 @@ func Test_Worker_Handler_Deployment_append(t *testing.T) {
 					Log: logger.Fake(),
 					Met: recorder.NewMeter(recorder.MeterConfig{
 						Env: "testing",
-						Ver: runtime.Tag(),
+						Sco: "specta",
+						Ver: "v0.1.0",
 					}),
 				})
 			}
