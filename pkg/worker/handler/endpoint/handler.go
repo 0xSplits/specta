@@ -15,31 +15,6 @@ const (
 	Metric = "http_endpoint_health"
 )
 
-var (
-	mapping = map[string]map[string][]string{
-		"explorer": {
-			"testing":    {"https://explorer.testing.splits.org"},
-			"staging":    {"https://explorer.staging.splits.org"},
-			"production": {"https://explorer.production.splits.org", "https://app.splits.org"},
-		},
-		"server": {
-			"testing":    {"https://server.testing.splits.org/metrics"},
-			"staging":    {"https://server.staging.splits.org/metrics"},
-			"production": {"https://server.production.splits.org/metrics", "https://api.splits.org/metrics"},
-		},
-		"specta": {
-			"testing":    {"https://specta.testing.splits.org/metrics"},
-			"staging":    {"https://specta.staging.splits.org/metrics"},
-			"production": {"https://specta.production.splits.org/metrics"},
-		},
-		"teams": {
-			"testing":    {"https://teams.testing.splits.org"},
-			"staging":    {"https://teams.staging.splits.org"},
-			"production": {"https://teams.production.splits.org", "https://teams.splits.org"},
-		},
-	}
-)
-
 type Config struct {
 	Env envvar.Env
 	Log logger.Interface

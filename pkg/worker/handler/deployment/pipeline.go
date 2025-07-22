@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
+	"github.com/xh3b4sd/choreo/parallel"
 	"github.com/xh3b4sd/tracer"
 )
 
@@ -36,15 +37,15 @@ type pipeline struct {
 // approach we prefer to rather miss a measurement than counting it twice,
 // because counting twice creates inconsistencies in our SLOs.
 func (h *Handler) pipeline(det []detail) ([]pipeline, error) {
+	var pip []pipeline
 	var err error
 
-	var pip []pipeline
-	for _, x := range det {
+	fnc := func(_ int, d detail) error {
 		var inp *codepipeline.ListPipelineExecutionsInput
 		{
 			inp = &codepipeline.ListPipelineExecutionsInput{
 				MaxResults:   aws.Int32(max),
-				PipelineName: aws.String(x.nam),
+				PipelineName: aws.String(d.nam),
 			}
 		}
 
@@ -52,12 +53,21 @@ func (h *Handler) pipeline(det []detail) ([]pipeline, error) {
 		{
 			out, err = h.acp.ListPipelineExecutions(context.Background(), inp)
 			if err != nil {
-				return nil, tracer.Mask(err)
+				return tracer.Mask(err)
 			}
 		}
 
-		for _, y := range out.PipelineExecutionSummaries {
-			pip = h.append(pip, y)
+		for _, x := range out.PipelineExecutionSummaries {
+			pip = h.append(pip, x)
+		}
+
+		return nil
+	}
+
+	{
+		err = parallel.Slice(det, fnc)
+		if err != nil {
+			return nil, tracer.Mask(err)
 		}
 	}
 
@@ -67,45 +77,45 @@ func (h *Handler) pipeline(det []detail) ([]pipeline, error) {
 // append manages the skipping behaviour of already observed pipeline
 // executions, as well as those pipeline executions that occured in the past
 // before the internal start time.
-func (h *Handler) append(pip []pipeline, sum types.PipelineExecutionSummary) []pipeline {
+func (h *Handler) append(pip []pipeline, out types.PipelineExecutionSummary) []pipeline {
 	// We skip all pipeline executions that are too far in the past, given
 	// Specta's own launch time.
-	if sum.StartTime.Before(h.sta) {
+	if out.StartTime.Before(h.sta) {
 		return pip
 	}
 
 	// We skip all pipeline executions that we already observed, given the
 	// cached execution ID.
-	if h.cac.Contains(*sum.PipelineExecutionId) {
+	if h.cac.Contains(*out.PipelineExecutionId) {
 		return pip
 	}
 
 	// We skip all pipeline executions that have not yet completed, given the
 	// pipeline status string.
-	if pipSkp(sum.Status) {
+	if pipSkp(out.Status) {
 		return pip
 	}
 
 	var lat time.Duration
 	{
-		lat = sum.LastUpdateTime.Sub(*sum.StartTime)
+		lat = out.LastUpdateTime.Sub(*out.StartTime)
 	}
 
 	var suc string
-	if sum.Status == types.PipelineExecutionStatusSucceeded {
+	if out.Status == types.PipelineExecutionStatusSucceeded {
 		suc = "true"
 	} else {
 		suc = "false"
 	}
 
 	pip = append(pip, pipeline{
-		eid: *sum.PipelineExecutionId,
+		eid: *out.PipelineExecutionId,
 		lat: lat,
 		suc: suc,
 	})
 
 	{
-		h.cac.Add(*sum.PipelineExecutionId, struct{}{})
+		h.cac.Add(*out.PipelineExecutionId, struct{}{})
 	}
 
 	return pip
