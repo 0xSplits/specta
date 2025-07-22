@@ -6,7 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
-	prallel "github.com/xh3b4sd/choreo/parallel"
+	"github.com/xh3b4sd/choreo/parallel"
 	"github.com/xh3b4sd/tracer"
 )
 
@@ -51,7 +51,7 @@ func (h *Handler) service(det []detail) ([]service, error) {
 	}
 
 	{
-		err = prallel.Slice(det, fnc) // TODO fix package name
+		err = parallel.Slice(det, fnc)
 		if err != nil {
 			return nil, tracer.Mask(err)
 		}

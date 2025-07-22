@@ -7,7 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
-	prallel "github.com/xh3b4sd/choreo/parallel"
+	"github.com/xh3b4sd/choreo/parallel"
 	"github.com/xh3b4sd/tracer"
 )
 
@@ -57,15 +57,15 @@ func (h *Handler) pipeline(det []detail) ([]pipeline, error) {
 			}
 		}
 
-		for _, y := range out.PipelineExecutionSummaries {
-			pip = h.append(pip, y)
+		for _, x := range out.PipelineExecutionSummaries {
+			pip = h.append(pip, x)
 		}
 
 		return nil
 	}
 
 	{
-		err = prallel.Slice(det, fnc) // TODO fix package name
+		err = parallel.Slice(det, fnc)
 		if err != nil {
 			return nil, tracer.Mask(err)
 		}

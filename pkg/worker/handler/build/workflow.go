@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/google/go-github/v73/github"
+	"github.com/xh3b4sd/choreo/parallel"
 	"github.com/xh3b4sd/tracer"
 )
 
@@ -42,10 +43,10 @@ type workflow struct {
 // rather miss a measurement than counting it twice, because counting twice
 // creates inconsistencies in our SLOs.
 func (h *Handler) workflow(det []detail) ([]workflow, error) {
+	var wor []workflow
 	var err error
 
-	var wor []workflow
-	for _, x := range det {
+	fnc := func(_ int, d detail) error {
 		var inp *github.ListWorkflowRunsOptions
 		{
 			inp = &github.ListWorkflowRunsOptions{
@@ -57,14 +58,23 @@ func (h *Handler) workflow(det []detail) ([]workflow, error) {
 
 		var out *github.WorkflowRuns
 		{
-			out, _, err = h.git.Actions.ListRepositoryWorkflowRuns(context.Background(), Organization, x.repo, inp)
+			out, _, err = h.git.Actions.ListRepositoryWorkflowRuns(context.Background(), Organization, d.repo, inp)
 			if err != nil {
-				return nil, tracer.Mask(err)
+				return tracer.Mask(err)
 			}
 		}
 
-		for _, y := range out.WorkflowRuns {
-			wor = h.append(wor, x, y)
+		for _, x := range out.WorkflowRuns {
+			wor = h.append(wor, d, x)
+		}
+
+		return nil
+	}
+
+	{
+		err = parallel.Slice(det, fnc)
+		if err != nil {
+			return nil, tracer.Mask(err)
 		}
 	}
 
