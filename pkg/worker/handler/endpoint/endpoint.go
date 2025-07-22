@@ -21,7 +21,7 @@ func (h *Handler) endpoint(det []detail) ([]endpoint, error) {
 
 	fnc := func(_ int, d detail) error {
 		var lis []float64
-		
+
 		for _, x := range d.url {
 			var hlt int
 			{
