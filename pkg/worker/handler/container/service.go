@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
+	prallel "github.com/xh3b4sd/choreo/parallel"
 	"github.com/xh3b4sd/tracer"
 )
 
@@ -21,10 +22,10 @@ type service struct {
 // all services that have all of their desired containers running. Otherwise the
 // unhealthy status 0 is assigned.
 func (h *Handler) service(det []detail) ([]service, error) {
+	var ser []service
 	var err error
 
-	var ser []service
-	for _, x := range det {
+	fnc := func(_ int, x detail) error {
 		var inp *ecs.DescribeServicesInput
 		{
 			inp = &ecs.DescribeServicesInput{
@@ -38,48 +39,65 @@ func (h *Handler) service(det []detail) ([]service, error) {
 		{
 			out, err = h.ecs.DescribeServices(context.Background(), inp)
 			if err != nil {
-				return nil, tracer.Mask(err)
+				return tracer.Mask(err)
 			}
 		}
 
-		for _, y := range out.Services {
-			var tag string
-			{
-				tag = serTag(y.Tags)
-			}
+		{
+			ser = h.append(ser, out)
+		}
 
-			if tag == "" {
-				h.log.Log(
-					"level", "warning",
-					"message", "skipping instrumentation for ECS service",
-					"reason", "ECS service has no 'service' tag",
-					"cluster", *y.ClusterArn,
-					"service", *y.ServiceArn,
-				)
+		return nil
+	}
 
-				{
-					continue
-				}
-			}
-
-			var hlt float64
-			switch {
-			case y.RunningCount == 0:
-				hlt = 0 // no containers running
-			case y.RunningCount != y.DesiredCount:
-				hlt = 0.5 // not enough containers running
-			default:
-				hlt = 1 // all containers running
-			}
-
-			ser = append(ser, service{
-				hlt: hlt,
-				lab: tag,
-			})
+	{
+		err = prallel.Slice(det, fnc) // TODO fix package name
+		if err != nil {
+			return nil, tracer.Mask(err)
 		}
 	}
 
 	return ser, nil
+}
+
+func (h *Handler) append(ser []service, out *ecs.DescribeServicesOutput) []service {
+	for _, y := range out.Services {
+		var tag string
+		{
+			tag = serTag(y.Tags)
+		}
+
+		if tag == "" {
+			h.log.Log(
+				"level", "warning",
+				"message", "skipping instrumentation for ECS service",
+				"reason", "ECS service has no 'service' tag",
+				"cluster", *y.ClusterArn,
+				"service", *y.ServiceArn,
+			)
+
+			{
+				continue
+			}
+		}
+
+		var hlt float64
+		switch {
+		case y.RunningCount == 0:
+			hlt = 0 // no containers running
+		case y.RunningCount != y.DesiredCount:
+			hlt = 0.5 // not enough containers running
+		default:
+			hlt = 1 // all containers running
+		}
+
+		ser = append(ser, service{
+			hlt: hlt,
+			lab: tag,
+		})
+	}
+
+	return ser
 }
 
 func serTag(tag []types.Tag) string {
