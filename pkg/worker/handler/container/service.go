@@ -25,12 +25,12 @@ func (h *Handler) service(det []detail) ([]service, error) {
 	var ser []service
 	var err error
 
-	fnc := func(_ int, x detail) error {
+	fnc := func(_ int, d detail) error {
 		var inp *ecs.DescribeServicesInput
 		{
 			inp = &ecs.DescribeServicesInput{
-				Cluster:  aws.String(x.clu),
-				Services: []string{x.arn},
+				Cluster:  aws.String(d.clu),
+				Services: []string{d.arn},
 				Include:  []types.ServiceField{types.ServiceFieldTags},
 			}
 		}
@@ -43,8 +43,8 @@ func (h *Handler) service(det []detail) ([]service, error) {
 			}
 		}
 
-		{
-			ser = h.append(ser, out)
+		for _, x := range out.Services {
+			ser = h.append(ser, x)
 		}
 
 		return nil
@@ -60,42 +60,40 @@ func (h *Handler) service(det []detail) ([]service, error) {
 	return ser, nil
 }
 
-func (h *Handler) append(ser []service, out *ecs.DescribeServicesOutput) []service {
-	for _, y := range out.Services {
-		var tag string
-		{
-			tag = serTag(y.Tags)
-		}
-
-		if tag == "" {
-			h.log.Log(
-				"level", "warning",
-				"message", "skipping instrumentation for ECS service",
-				"reason", "ECS service has no 'service' tag",
-				"cluster", *y.ClusterArn,
-				"service", *y.ServiceArn,
-			)
-
-			{
-				continue
-			}
-		}
-
-		var hlt float64
-		switch {
-		case y.RunningCount == 0:
-			hlt = 0 // no containers running
-		case y.RunningCount != y.DesiredCount:
-			hlt = 0.5 // not enough containers running
-		default:
-			hlt = 1 // all containers running
-		}
-
-		ser = append(ser, service{
-			hlt: hlt,
-			lab: tag,
-		})
+func (h *Handler) append(ser []service, out types.Service) []service {
+	var tag string
+	{
+		tag = serTag(out.Tags)
 	}
+
+	if tag == "" {
+		h.log.Log(
+			"level", "warning",
+			"message", "skipping instrumentation for ECS service",
+			"reason", "ECS service has no 'service' tag",
+			"cluster", *out.ClusterArn,
+			"service", *out.ServiceArn,
+		)
+
+		{
+			return ser
+		}
+	}
+
+	var hlt float64
+	switch {
+	case out.RunningCount == 0:
+		hlt = 0 // no containers running
+	case out.RunningCount != out.DesiredCount:
+		hlt = 0.5 // not enough containers running
+	default:
+		hlt = 1 // all containers running
+	}
+
+	ser = append(ser, service{
+		hlt: hlt,
+		lab: tag,
+	})
 
 	return ser
 }
