@@ -6,7 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroupstaggingapi"
-	tagtypes "github.com/aws/aws-sdk-go-v2/service/resourcegroupstaggingapi/types"
+	"github.com/aws/aws-sdk-go-v2/service/resourcegroupstaggingapi/types"
 	"github.com/xh3b4sd/tracer"
 )
 
@@ -28,7 +28,7 @@ func (h *Handler) detail() ([]detail, error) {
 	{
 		inp = &resourcegroupstaggingapi.GetResourcesInput{
 			ResourceTypeFilters: []string{"ecs:service"},
-			TagFilters: []tagtypes.TagFilter{
+			TagFilters: []types.TagFilter{
 				{
 					Key:    aws.String("environment"),
 					Values: []string{h.env.Environment},
