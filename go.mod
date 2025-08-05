@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.30.0
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.62.0
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.43.0
-	github.com/aws/aws-sdk-go-v2/service/ec2 v1.239.0
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.240.0
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.62.0
 	github.com/aws/aws-sdk-go-v2/service/resourcegroupstaggingapi v1.28.0
 	github.com/google/go-github/v73 v73.0.0
@@ -36,7 +36,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.7.2 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.13.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.13.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.26.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.31.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.35.0 // indirect
