@@ -1,6 +1,8 @@
 package stack
 
-import "github.com/xh3b4sd/tracer"
+import (
+	"github.com/xh3b4sd/tracer"
+)
 
 func (h *Handler) Ensure() error {
 	var err error
