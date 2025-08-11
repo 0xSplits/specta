@@ -73,7 +73,7 @@ func musHlt(url string) int {
 	}
 
 	{
-		defer res.Body.Close() //nolint:errcheck
+		defer res.Body.Close() // nolint:errcheck
 	}
 
 	if res.StatusCode == http.StatusOK {
