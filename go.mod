@@ -8,7 +8,7 @@ require (
 	github.com/0xSplits/workit v0.4.0
 	github.com/aws/aws-sdk-go-v2 v1.38.0
 	github.com/aws/aws-sdk-go-v2/config v1.31.0
-	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.63.0
+	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.64.0
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.45.0
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.241.0
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.63.0
