@@ -6,7 +6,7 @@ require (
 	github.com/0xSplits/otelgo v0.1.0
 	github.com/0xSplits/spectagocode v0.1.1
 	github.com/0xSplits/workit v0.4.0
-	github.com/aws/aws-sdk-go-v2 v1.37.2
+	github.com/aws/aws-sdk-go-v2 v1.38.0
 	github.com/aws/aws-sdk-go-v2/config v1.30.0
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.63.0
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.44.0
