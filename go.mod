@@ -12,7 +12,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.45.0
 	github.com/aws/aws-sdk-go-v2/service/ec2 v1.241.0
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.63.0
-	github.com/aws/aws-sdk-go-v2/service/resourcegroupstaggingapi v1.28.0
+	github.com/aws/aws-sdk-go-v2/service/resourcegroupstaggingapi v1.29.0
 	github.com/google/go-github/v73 v73.0.0
 	github.com/google/gofuzz v1.2.0
 	github.com/gorilla/mux v1.8.1
