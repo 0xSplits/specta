@@ -24,13 +24,13 @@ func (h *Handler) detail() ([]detail, error) {
 				repo:  "kayron",
 				label: "kayron",
 				check: "go-build",
-				image: "docker-release",
+				image: "docker-push",
 			},
 			{
 				repo:  "specta",
 				label: "specta",
 				check: "go-build",
-				image: "docker-release",
+				image: "docker-push",
 			},
 			{
 				repo:  "splits",
