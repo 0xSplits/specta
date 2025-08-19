@@ -21,6 +21,12 @@ func (h *Handler) detail() ([]detail, error) {
 	{
 		det = []detail{
 			{
+				repo:  "kayron",
+				label: "kayron",
+				check: "go-build",
+				image: "docker-release",
+			},
+			{
 				repo:  "specta",
 				label: "specta",
 				check: "go-build",
