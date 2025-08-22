@@ -2,10 +2,10 @@ package daemon
 
 import (
 	"github.com/0xSplits/specta/pkg/server"
-	"github.com/0xSplits/workit/worker"
+	"github.com/0xSplits/workit/worker/parallel"
 )
 
 type Interface interface {
 	Server() *server.Server
-	Worker() *worker.Worker
+	Worker() *parallel.Worker
 }
