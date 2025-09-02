@@ -38,6 +38,12 @@ func (h *Handler) detail() ([]detail, error) {
 				check: "typescript-server",
 				image: "docker-push",
 			},
+			{
+				repo:  "splits-lite",
+				label: "splits-lite",
+				check: "typescript",
+				image: "docker-push",
+			},
 		}
 	}
 

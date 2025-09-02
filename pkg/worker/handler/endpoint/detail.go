@@ -28,6 +28,10 @@ func (h *Handler) detail() ([]detail, error) {
 					url: []string{"https://specta.testing.splits.org/metrics"},
 				},
 				{
+					lab: "splits-lite",
+					url: []string{"https://lite.testing.splits.org"},
+				},
+				{
 					lab: "teams",
 					url: []string{"https://teams.testing.splits.org"},
 				},
@@ -46,6 +50,10 @@ func (h *Handler) detail() ([]detail, error) {
 					url: []string{"https://specta.staging.splits.org/metrics"},
 				},
 				{
+					lab: "splits-lite",
+					url: []string{"https://lite.staging.splits.org"},
+				},
+				{
 					lab: "teams",
 					url: []string{"https://teams.staging.splits.org"},
 				},
@@ -62,6 +70,10 @@ func (h *Handler) detail() ([]detail, error) {
 				{
 					lab: "specta",
 					url: []string{"https://specta.production.splits.org/metrics"},
+				},
+				{
+					lab: "splits-lite",
+					url: []string{"https://lite.production.splits.org", "https://lite.splits.org"},
 				},
 				{
 					lab: "teams",

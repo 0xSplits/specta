@@ -43,7 +43,7 @@ func New(c Config) *Handler {
 		gau[Metric] = recorder.NewGauge(recorder.GaugeConfig{
 			Des: "the health status of an http endpoint",
 			Lab: map[string][]string{
-				"service": {"explorer", "server", "specta", "teams"},
+				"service": {"explorer", "server", "specta", "splits-lite", "teams"},
 			},
 			Met: c.Met,
 			Nam: Metric,

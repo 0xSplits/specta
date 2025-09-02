@@ -66,6 +66,17 @@ func (h *Handler) append(ser []service, out types.Service) []service {
 		tag = serTag(out.Tags)
 	}
 
+	if *out.Status == "INACTIVE" {
+		// There might be inactive stacks with our desired service labels in case we
+		// deployed CloudFormation stacks multiple times during testing. We only
+		// want to monitor those stacks that are still active, because the inactive
+		// versions have most likely been deleted already.
+
+		{
+			return ser
+		}
+	}
+
 	if tag == "" {
 		h.log.Log(
 			"level", "warning",
