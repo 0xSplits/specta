@@ -2,8 +2,8 @@ github.com/0xSplits/otelgo v0.1.2 h1:QjbUMNNQcUsnkOmZ35bc3Fbhz7u0PA611LYrh4aOpPk
 github.com/0xSplits/otelgo v0.1.2/go.mod h1:YnmWxWUT7xaMQTF3FBmN8GuvIMafSJ/lYhlyIBlr99w=
 github.com/0xSplits/spectagocode v0.1.1 h1:Emy50t0gd6XwZy0mQAVIy/dVDqpCh4VFSnJGhRjgL4I=
 github.com/0xSplits/spectagocode v0.1.1/go.mod h1:MGtfriIXmnM5WDc0+t6Ywvgc4NY/B0P45ggqr1MOU7o=
-github.com/0xSplits/workit v0.5.0 h1:BuU1iafQxZXe4tmgMIdSc9KKDO54IH3U8efngsPntBs=
-github.com/0xSplits/workit v0.5.0/go.mod h1:sersLWCXePPbKi16XsCEAcy+mri833ZNVPewMB3JJJ0=
+github.com/0xSplits/workit v0.6.0 h1:h2LrDdkOTuokSOwt0E3dt8N90fsMsoNd3CCsyI3U0f8=
+github.com/0xSplits/workit v0.6.0/go.mod h1:+SQ35oJXLBigYeA1VSrKkJNaX4KBLE+M4PuoBZT1xs0=
 github.com/aws/aws-sdk-go-v2 v1.38.3 h1:B6cV4oxnMs45fql4yRH+/Po/YU+597zgWqvDpYMturk=
 github.com/aws/aws-sdk-go-v2 v1.38.3/go.mod h1:sDioUELIUO9Znk23YVmIk86/9DOpkbyyVb1i/gUNFXY=
 github.com/aws/aws-sdk-go-v2/config v1.31.6 h1:a1t8fXY4GT4xjyJExz4knbuoxSCacB5hT/WgtfPyLjo=
