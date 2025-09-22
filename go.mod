@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.31.8
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.66.2
 	github.com/aws/aws-sdk-go-v2/service/codepipeline v1.46.4
-	github.com/aws/aws-sdk-go-v2/service/ec2 v1.251.2
+	github.com/aws/aws-sdk-go-v2/service/ec2 v1.253.0
 	github.com/aws/aws-sdk-go-v2/service/ecs v1.64.0
 	github.com/aws/aws-sdk-go-v2/service/resourcegroupstaggingapi v1.30.4
 	github.com/google/go-github/v73 v73.0.0
