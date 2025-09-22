@@ -1,11 +1,11 @@
 module github.com/0xSplits/specta
 
-go 1.24
+go 1.24.0
 
 require (
 	github.com/0xSplits/otelgo v0.1.2
 	github.com/0xSplits/spectagocode v0.1.1
-	github.com/0xSplits/workit v0.6.0
+	github.com/0xSplits/workit v0.7.0
 	github.com/aws/aws-sdk-go-v2 v1.39.0
 	github.com/aws/aws-sdk-go-v2/config v1.31.8
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.66.2
@@ -62,7 +62,7 @@ require (
 	go.opentelemetry.io/otel/sdk/metric v1.37.0 // indirect
 	go.opentelemetry.io/otel/trace v1.38.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
-	golang.org/x/sync v0.16.0 // indirect
+	golang.org/x/sync v0.17.0 // indirect
 	golang.org/x/sys v0.35.0 // indirect
 	google.golang.org/protobuf v1.36.8 // indirect
 )
