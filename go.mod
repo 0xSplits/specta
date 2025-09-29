@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/0xSplits/otelgo v0.1.2
 	github.com/0xSplits/spectagocode v0.1.1
-	github.com/0xSplits/workit v0.7.0
+	github.com/0xSplits/workit v0.7.1
 	github.com/aws/aws-sdk-go-v2 v1.39.0
 	github.com/aws/aws-sdk-go-v2/config v1.31.8
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.66.2
@@ -23,7 +23,7 @@ require (
 	github.com/rs/cors v1.11.1
 	github.com/spf13/cobra v1.10.1
 	github.com/twitchtv/twirp v8.1.3+incompatible
-	github.com/xh3b4sd/choreo v0.5.0
+	github.com/xh3b4sd/choreo v0.6.0
 	github.com/xh3b4sd/logger v0.11.1
 	github.com/xh3b4sd/tracer v1.0.0
 	go.opentelemetry.io/otel/metric v1.38.0
