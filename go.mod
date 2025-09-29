@@ -5,7 +5,7 @@ go 1.24.0
 require (
 	github.com/0xSplits/otelgo v0.1.2
 	github.com/0xSplits/spectagocode v0.1.1
-	github.com/0xSplits/workit v0.7.0
+	github.com/0xSplits/workit v0.7.1
 	github.com/aws/aws-sdk-go-v2 v1.39.2
 	github.com/aws/aws-sdk-go-v2/config v1.31.11
 	github.com/aws/aws-sdk-go-v2/service/cloudformation v1.66.4
