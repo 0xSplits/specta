@@ -15,6 +15,7 @@ import (
 	"github.com/0xSplits/workit/worker/parallel"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/google/go-github/v75/github"
 	"github.com/xh3b4sd/tracer"
 )
 
@@ -22,6 +23,11 @@ func (d *Daemon) Worker() *parallel.Worker {
 	var cfg aws.Config
 	{
 		cfg = musAws()
+	}
+
+	var git *github.Client
+	{
+		git = newGit(d.env)
 	}
 
 	var reg *registry.Registry
@@ -37,7 +43,7 @@ func (d *Daemon) Worker() *parallel.Worker {
 	{
 		wor = parallel.New(parallel.Config{
 			Han: []handler.Cooler{
-				build.New(build.Config{Env: d.env, Log: d.log, Met: d.met}),
+				build.New(build.Config{Env: d.env, Git: git, Log: d.log, Met: d.met}),
 				deployment.New(deployment.Config{Aws: cfg, Env: d.env, Log: d.log, Met: d.met}),
 				container.New(container.Config{Aws: cfg, Env: d.env, Log: d.log, Met: d.met}),
 				endpoint.New(endpoint.Config{Env: d.env, Log: d.log, Met: d.met}),

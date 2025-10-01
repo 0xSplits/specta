@@ -122,6 +122,7 @@ func Test_Worker_Handler_Build_append(t *testing.T) {
 			{
 				han = New(Config{
 					Env: envvar.Env{Environment: "testing"},
+					Git: github.NewClient(nil),
 					Log: logger.Fake(),
 					Met: recorder.NewMeter(recorder.MeterConfig{
 						Env: "testing",
