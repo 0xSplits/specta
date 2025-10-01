@@ -25,6 +25,7 @@ const (
 
 type Config struct {
 	Env envvar.Env
+	Git *github.Client
 	Log logger.Interface
 	Met metric.Meter
 }
@@ -39,6 +40,9 @@ type Handler struct {
 }
 
 func New(c Config) *Handler {
+	if c.Git == nil {
+		tracer.Panic(tracer.Mask(fmt.Errorf("%T.Git must not be empty", c)))
+	}
 	if c.Log == nil {
 		tracer.Panic(tracer.Mask(fmt.Errorf("%T.Log must not be empty", c)))
 	}
@@ -123,7 +127,7 @@ func New(c Config) *Handler {
 	return &Handler{
 		cac: cac,
 		env: c.Env,
-		git: github.NewClient(nil).WithAuthToken(c.Env.GithubToken),
+		git: c.Git,
 		log: c.Log,
 		reg: reg,
 		sta: sta,
