@@ -8,7 +8,7 @@ import (
 
 	"github.com/0xSplits/otelgo/recorder"
 	"github.com/0xSplits/specta/pkg/envvar"
-	"github.com/google/go-github/v73/github"
+	"github.com/google/go-github/v75/github"
 	"github.com/xh3b4sd/logger"
 )
 
