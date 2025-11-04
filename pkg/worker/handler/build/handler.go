@@ -59,7 +59,7 @@ func New(c Config) *Handler {
 			Des: "the total amount of build container executions",
 			Lab: map[string][]string{
 				"platform":   {"github"},
-				"repository": {"kayron", "server", "specta", "splits-lite"},
+				"repository": {"kayron", "pulsar", "server", "specta", "splits-lite"},
 				"success":    {"true", "false"},
 				"workflow":   {"check", "image"},
 			},
@@ -77,7 +77,7 @@ func New(c Config) *Handler {
 			Des: "the time it takes for build container executions to complete",
 			Lab: map[string][]string{
 				"platform":   {"github"},
-				"repository": {"kayron", "server", "specta", "splits-lite"},
+				"repository": {"kayron", "pulsar", "server", "specta", "splits-lite"},
 				"success":    {"true", "false"},
 				"workflow":   {"check", "image"},
 			},
