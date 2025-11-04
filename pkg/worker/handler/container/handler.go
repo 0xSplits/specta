@@ -52,7 +52,7 @@ func New(c Config) *Handler {
 		gau[Metric] = recorder.NewGauge(recorder.GaugeConfig{
 			Des: "the health status of ecs service containers",
 			Lab: map[string][]string{
-				"service": {"alloy", "graphql", "kayron", "otel-collector", "server", "specta", "splits-lite", "worker"},
+				"service": {"alloy", "graphql", "kayron", "otel-collector", "pulsar", "server", "specta", "splits-lite", "worker"},
 			},
 			Met: c.Met,
 			Nam: Metric,

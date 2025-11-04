@@ -27,6 +27,12 @@ func (h *Handler) detail() ([]detail, error) {
 				image: "docker-push",
 			},
 			{
+				repo:  "pulsar",
+				label: "pulsar",
+				check: "go-build",
+				image: "docker-push",
+			},
+			{
 				repo:  "specta",
 				label: "specta",
 				check: "go-build",
