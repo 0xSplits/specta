@@ -33,7 +33,7 @@ func (h *Handler) detail() ([]detail, error) {
 				},
 				{
 					lab: "teams",
-					url: []string{"https://teams.testing.splits.org"},
+					url: []string{"https://teams.testing.splits.org", "https://app.testing.splits.org"},
 				},
 			},
 			"staging": {
@@ -55,7 +55,7 @@ func (h *Handler) detail() ([]detail, error) {
 				},
 				{
 					lab: "teams",
-					url: []string{"https://teams.staging.splits.org"},
+					url: []string{"https://teams.staging.splits.org", "https://app.staging.splits.org"},
 				},
 			},
 			"production": {
