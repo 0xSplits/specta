@@ -77,7 +77,7 @@ func (h *Handler) detail() ([]detail, error) {
 				},
 				{
 					lab: "teams",
-					url: []string{"https://teams.production.splits.org", "https://teams.splits.org"},
+					url: []string{"https://teams.production.splits.org", "https://teams.splits.org", "https://app.splits.org"},
 				},
 			},
 		}
