@@ -61,7 +61,7 @@ func (h *Handler) detail() ([]detail, error) {
 			"production": {
 				{
 					lab: "explorer",
-					url: []string{"https://explorer.production.splits.org", "https://app.splits.org"},
+					url: []string{"https://explorer.production.splits.org", "https://explorer.splits.org"},
 				},
 				{
 					lab: "server",
