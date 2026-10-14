@@ -1,0 +1,37 @@
+name: "Go Vulncheck"
+
+# Dependabot only opens pull requests for security updates in this repository.
+# This workflow is a second safety net. govulncheck reports only the known
+# vulnerabilities that our code actually reaches. It runs on every push, and
+# once a month so that newly published vulnerabilities get noticed while nobody
+# is working on the code. Note that GitHub disables scheduled workflows in
+# public repositories after 60 days without repository activity.
+on:
+  push:
+  schedule:
+    - cron: "0 4 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  go-vulncheck:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Setup Git Project"
+        uses: "actions/checkout@v7"
+
+      # govulncheck also reports vulnerabilities of the Go standard library
+      # based on the Go version it runs with. We use the latest stable release
+      # instead of the minimum version in go.mod, because our Docker image is
+      # built with the latest patch release of the golang base image.
+      - name: "Setup Go Env"
+        uses: "actions/setup-go@v7"
+        with:
+          cache: true
+          go-version: "stable"
+
+      - name: "Check Go Vulnerabilities"
+        run: |
+          go run golang.org/x/vuln/cmd/govulncheck@latest ./...

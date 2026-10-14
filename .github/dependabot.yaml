@@ -4,25 +4,32 @@
 #
 #     workflow create dependabot -c gomod:github.com/aws/aws-sdk-go-v2
 #
+# Edited by hand after generation. This service is not under active
+# development, so we only want pull requests for security updates. Setting
+# open-pull-requests-limit to 0 disables routine version updates, while security
+# updates keep working as long as "Dependabot security updates" is enabled in
+# the repository settings. Known vulnerabilities are additionally checked by the
+# Go Vulncheck workflow.
+#
 
 version: 2
 
 updates:
   - package-ecosystem: "docker"
     directory: "/"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 0
     schedule:
       interval: "weekly"
       time: "04:00"
   - package-ecosystem: "github-actions"
     directory: "/"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 0
     schedule:
       interval: "weekly"
       time: "04:00"
   - package-ecosystem: "gomod"
     directory: "/"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 0
     schedule:
       interval: "weekly"
       time: "04:00"
