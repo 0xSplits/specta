@@ -1,6 +1,6 @@
 module github.com/0xSplits/specta
 
-go 1.26.10
+go 1.27.3
 
 require (
 	github.com/0xSplits/otelgo v0.1.2
