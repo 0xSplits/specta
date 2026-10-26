@@ -3,6 +3,7 @@ package endpoint
 import (
 	"net/http"
 	"slices"
+	"strconv"
 
 	"github.com/xh3b4sd/choreo/parallel"
 	"github.com/xh3b4sd/tracer"
@@ -25,15 +26,7 @@ func (h *Handler) endpoint(det []detail) ([]endpoint, error) {
 		for _, x := range d.url {
 			var hlt int
 			{
-				hlt = musHlt(x)
-			}
-
-			if hlt != 1 {
-				h.log.Log(
-					"level", "info",
-					"message", "observed non-ok status code",
-					"url", x,
-				)
+				hlt = h.musHlt(x)
 			}
 
 			{
@@ -61,13 +54,20 @@ func (h *Handler) endpoint(det []detail) ([]endpoint, error) {
 	return end, nil
 }
 
-func musHlt(url string) int {
+func (h *Handler) musHlt(url string) int {
 	var err error
 
 	var res *http.Response
 	{
 		res, err = http.Get(url)
 		if err != nil {
+			h.log.Log(
+				"level", "info",
+				"message", "observed non-ok status code",
+				"url", url,
+				"error", err.Error(),
+			)
+
 			return 0
 		}
 	}
@@ -76,9 +76,16 @@ func musHlt(url string) int {
 		defer res.Body.Close() // nolint:errcheck
 	}
 
-	if res.StatusCode == http.StatusOK {
-		return 1
+	if res.StatusCode != http.StatusOK {
+		h.log.Log(
+			"level", "info",
+			"message", "observed non-ok status code",
+			"url", url,
+			"status", strconv.Itoa(res.StatusCode),
+		)
+
+		return 0
 	}
 
-	return 0
+	return 1
 }
