@@ -32,9 +32,6 @@ func (h *Handler) detail() ([]detail, error) {
 					url: []string{"https://lite.testing.splits.org"},
 				},
 				{
-					// The teams.* hosts only redirect to app.*. Listing both requests each
-					// app host twice per check, and Vercel answers that with non-ok
-					// responses, so only list the app.* hosts.
 					lab: "teams",
 					url: []string{"https://app.testing.splits.org"},
 				},
